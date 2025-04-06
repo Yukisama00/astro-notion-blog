@@ -33,6 +33,7 @@
     "metascraper-description": "^5.45.28",
     "metascraper-image": "^5.45.28",
     "metascraper-title": "^5.45.28",
+    "node-gyp": "^11.2.0",
     "prismjs": "^1.29.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
