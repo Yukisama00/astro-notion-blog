@@ -236,9 +236,13 @@ if (database.Icon && database.Icon.Type === 'file') {
     color: #333;
   }
   main header h1 a {
-    display: block;
-    color: inherit;
-  }
+  white-space: nowrap; /* 折り返しを防ぐ */
+  overflow: hidden; /* はみ出した部分を隠す */
+  text-overflow: ellipsis; /* はみ出した部分を省略記号にする */
+  font-size: clamp(1rem, 2.5vw, 1.5rem); /* 文字サイズを画面幅に応じて調整 */
+  display: block; /* 必要に応じて block に設定 */
+  max-width: 100%; /* 親要素の幅を超えないようにする */
+}
   main header h1 a:hover {
     color: inherit;
   }
@@ -622,9 +626,11 @@ if (database.Icon && database.Icon.Type === 'file') {
 }
 
 main header div.description {
-  white-space: nowrap; /* 折り返しを防ぐ */
-  overflow: hidden; /* はみ出した部分を隠す */
-  text-overflow: ellipsis; /* はみ出した部分を省略記号にする */
-  font-size: clamp(0.8rem, 2.5vw, 1.2rem); /* 文字サイズを画面幅に応じて調整 */
+  white-space: nowrap !important; /* 折り返しを防ぐ */
+  overflow: hidden !important; /* はみ出した部分を隠す */
+  text-overflow: ellipsis !important; /* はみ出した部分を省略記号にする */
+  font-size: clamp(0.8rem, 1.5vw, 1rem) !important; /* 文字サイズを画面幅に応じて調整 */
+  max-width: 100% !important; /* 親要素の幅を超えないようにする */
+  display: block !important; /* 必要に応じて block に設定 */
 }
 </style>
