@@ -127,7 +127,7 @@ if (database.Icon && database.Icon.Type === 'file') {
                   <a href="https://x.com/yukisama00" target="_blank" rel="noopener noreferrer">
                     <img src={getStaticFilePath('/icons/x.png')} alt="X" />
                   </a>
-                  <a href="https://www.youtube.com/@altu4616" target="_blank" rel="noopener noreferrer">
+                  <a href="https://www.youtube.com/@altu4616" target="_blank" rel="noopener noreferrer" class="youtube">
                     <img src={getStaticFilePath('/icons/youtube.png')} alt="YouTube" />
                   </a>
                 </div>
@@ -227,8 +227,10 @@ if (database.Icon && database.Icon.Type === 'file') {
   }
 
   main header {
-    padding: 20px 0 20px;
-  }
+  padding: 20px 0 20px; /* 既存の余白 */
+  margin-bottom: 2rem; /* blog post との間に余白を追加 */
+}
+
   main header h1 {
   display: flex; /* アイコンとテキストを横並びにする */
   align-items: center; /* アイコンを中心に揃える */
@@ -286,6 +288,10 @@ main header div.description {
   display: flex;
   align-items: center;
   gap: 1rem;
+}
+
+main .content {
+  margin-top: 2rem; /* header との間に余白を追加 */
 }
 
   main footer {
@@ -567,12 +573,13 @@ main header div.description {
   grid-template-columns: auto 1fr; /* 左にアイコン、右に内容 */
   grid-template-rows: auto auto; /* 行を2つに分ける */
   align-items: center; /* 縦方向にセンタリング */
-  gap: 1rem; /* 内部要素間のスペースを調整 */
-  padding: 1rem; /* 内側の余白を調整 */
+  gap: 0.5rem; /* 内部要素間のスペースを調整 */
+  padding: 0.5rem; /* 内側の余白を調整 */
   background-color: #f9f9f9; /* 背景色 */
   border: 1px solid #ddd; /* 枠線 */
   border-radius: 8px; /* 角丸 */
-  margin-top: 1rem; /* description との間に余白を追加 */
+  margin-top: 1rem; /* 他要素との間に余白を追加 */
+  height: auto; /* 高さを自動調整 */
 }
 
 .author-info {
@@ -584,27 +591,23 @@ main header div.description {
 }
 
 .author-icon {
-  width: 48px;
-  height: 48px;
+  width: 36px; /* アイコンの幅を縮小 */
+  height: 36px; /* アイコンの高さを縮小 */
   border-radius: 50%; /* 丸いアイコンにする */
-  display: block;
 }
 
 .author-name {
-  grid-column: 2 / 3; /* 右側の列に配置 */
-  grid-row: 1 / 2; /* 最上段に配置 */
-  font-size: 1rem;
+  font-size: 0.8rem; /* フォントサイズを縮小 */
   font-weight: bold;
   color: #333;
 }
 
 .author-links {
-  grid-column: 2 / 3; /* 右側の列に配置 */
-  grid-row: 2 / 3; /* 下段に配置 */
-  display: flex;
-  flex-direction: column; /* 縦方向に並べる */
-  gap: 0.5rem; /* アイコン間のスペース */
-  align-items: stretch; /* アイコン幅を均等にする */
+  display: grid; /* グリッドレイアウトを使用 */
+  grid-template-columns: repeat(2, 1fr); /* 2列に分割 */
+  gap: 0.5rem; /* アイコン間のスペースを調整 */
+  align-items: center; /* アイコンを中央揃え */
+  justify-content: center; /* グリッド全体を中央揃え */
 }
 
 .author-name,
@@ -616,8 +619,9 @@ main header div.description {
   display: flex;
   justify-content: center; /* アイコンを中央揃え */
   align-items: center;
-  flex: 1; /* 均等な幅を確保 */
-  padding: 0.5rem; /* アイコン周りの余白 */
+  width: 100%; /* グリッドセルの幅に合わせる */
+  height: 36px; /* アイコンの高さを固定 */
+  padding: 0; /* 余白を削除 */
   background-color: #f4f4f4; /* 背景色 */
   border: 1px solid #ddd; /* 枠線 */
   border-radius: 4px; /* 角丸 */
@@ -625,10 +629,15 @@ main header div.description {
 }
 
 .author-links a img {
-  width: auto; /* 幅を自動調整 */
-  height: 48px; /* 高さを固定 */
+  width: 24px; /* アイコンの幅を縮小 */
+  height: 24px; /* アイコンの高さを縮小 */
   object-fit: contain; /* 比率を維持しながら収める */
-  transition: transform 0.3s ease;
+}
+
+.author-links a.youtube img {
+  width: 100%; /* グリッドセルの幅に合わせる */
+  height: 100%; /* グリッドセルの高さに合わせる */
+  object-fit: contain; /* 画像全体を表示し、比率を維持 */
 }
 
 .author-links a:hover img {
