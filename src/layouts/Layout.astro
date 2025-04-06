@@ -121,7 +121,7 @@ if (database.Icon && database.Icon.Type === 'file') {
                 {database.Description}
               </div>
               <div class="author-section">
-                <div class="author-name">Author: Yuki</div>
+                <div class="author-name">Author/Administrator : Yuki</div>
                 <div class="author-info">
                   <img src={getStaticFilePath('/icons/author-icon.png')} alt="Author Icon" class="author-icon" />
                 </div>
@@ -152,10 +152,10 @@ if (database.Icon && database.Icon.Type === 'file') {
         <aside>
           <div class="sns-icons">
             <a href="https://x.com/yukisama00" target="_blank" rel="noopener noreferrer">
-              <img src={getStaticFilePath('/icons/x.svg')} alt="X" />
+              <img src={getStaticFilePath('/icons/x.png')} alt="X" />
             </a>
             <a href="https://www.youtube.com/@altu4616" target="_blank" rel="noopener noreferrer">
-              <img src={getStaticFilePath('/icons/youtube.svg')} alt="YouTube" />
+              <img src={getStaticFilePath('/icons/youtube.png')} alt="YouTube" />
             </a>
           </div>
           <SearchButton />
@@ -554,19 +554,22 @@ if (database.Icon && database.Icon.Type === 'file') {
   height: auto; /* 高さを自動調整 */
   object-fit: contain; /* 比率を維持しながら収める */
 }
+
 .author-section {
   display: grid;
-  grid-template-columns: auto 1fr; /* アイコンとリンクを横並びに */
-  align-items: center;
+  grid-template-columns: auto 1fr; /* 左にアイコン、右に内容 */
+  grid-template-rows: auto auto; /* 行を2つに分ける */
+  align-items: center; /* 縦方向にセンタリング */
   gap: 1rem;
   padding: 1rem;
-  background-color: #f9f9f9; /* 背景色を設定 */
-  border: 1px solid #ddd; /* 枠線を追加 */
-  border-radius: 8px; /* 角丸を設定 */
+  background-color: #f9f9f9; /* 背景色 */
+  border: 1px solid #ddd; /* 枠線 */
+  border-radius: 8px; /* 角丸 */
 }
 
 .author-info {
   grid-column: 1 / 2; /* 左側の列に配置 */
+  grid-row: 1 / 3; /* アイコンを2行分にまたがる */
   display: flex;
   justify-content: center; /* 横方向に中央揃え */
   align-items: center; /* 縦方向にセンタリング */
@@ -576,16 +579,20 @@ if (database.Icon && database.Icon.Type === 'file') {
   width: 48px;
   height: 48px;
   border-radius: 50%; /* 丸いアイコンにする */
-  align-items: center; /* アイコンを中央揃え */
+  display: block;
 }
 
 .author-name {
+  grid-column: 2 / 3; /* 右側の列に配置 */
+  grid-row: 1 / 2; /* 最上段に配置 */
   font-size: 1rem;
   font-weight: bold;
   color: #333;
 }
 
 .author-links {
+  grid-column: 2 / 3; /* 右側の列に配置 */
+  grid-row: 2 / 3; /* 下段に配置 */
   display: flex;
   flex-direction: column; /* 縦方向に並べる */
   gap: 0.5rem; /* アイコン間のスペース */
