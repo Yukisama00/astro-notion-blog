@@ -233,14 +233,16 @@ if (database.Icon && database.Icon.Type === 'file') {
     font-weight: 700;
     color: #333;
   }
-  main header h1 a {
+  main header h1 {
   white-space: nowrap; /* 折り返しを防ぐ */
   overflow: hidden; /* はみ出した部分を隠す */
   text-overflow: ellipsis; /* はみ出した部分を省略記号にする */
   font-size: clamp(1rem, 2.5vw, 1.5rem); /* 文字サイズを画面幅に応じて調整 */
   display: block; /* 必要に応じて block に設定 */
   max-width: 100%; /* 親要素の幅を超えないようにする */
-}
+  font-weight: bold; /* タイトルを強調 */
+  color: #333; /* テキストカラー */
+  }
   main header h1 a:hover {
     color: inherit;
   }
