@@ -135,6 +135,14 @@ if (database.Icon && database.Icon.Type === 'file') {
         </main>
 
         <aside>
+          <div class="sns-icons">
+            <a href="https://x.com/yukisama00" target="_blank" rel="noopener noreferrer">
+              <img src={getStaticFilePath('/icons/x.svg')} alt="X" />
+            </a>
+            <a href="https://www.youtube.com/@altu4616" target="_blank" rel="noopener noreferrer">
+              <img src={getStaticFilePath('/icons/youtube.svg')} alt="YouTube" />
+            </a>
+          </div>
           <SearchButton />
           <slot name="aside" />
         </aside>
@@ -487,5 +495,33 @@ if (database.Icon && database.Icon.Type === 'file') {
     .pagetop:hover, .pagetop:hover .pagetop__arrow {
       border-color: var(--accents-1);
     }
+}
+
+.sns-icons {
+  display: flex;
+  flex-direction: row; /* 横並びに変更 */
+  gap: 10px; /* アイコン間のスペースを設定 */
+  margin-bottom: 20px;
+  width: 100%; /* SearchButton と同じ幅にする */
+}
+.sns-icons a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 1; /* 横並びのアイコンを均等に配置 */
+  padding: 10px; /* ボタンの内側の余白 */
+  background-color: #f4f4f4; /* ボタンの背景色 */
+  border: 1px solid #ddd; /* ボタンの枠線 */
+  border-radius: 4px; /* ボタンの角丸 */
+  text-decoration: none; /* リンクの下線を削除 */
+  transition: background-color 0.3s ease;
+}
+.sns-icons a:hover {
+  background-color: #e0e0e0; /* ホバー時の背景色 */
+}
+.sns-icons a img {
+  width: 48px; /* 幅を指定 */
+  height: auto; /* 高さを自動調整 */
+  object-fit: contain; /* 比率を維持しながら収める */
 }
 </style>
