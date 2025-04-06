@@ -60,6 +60,10 @@ const client = new Client({
   auth: NOTION_API_SECRET,
 })
 
+// デバッグ用ログ
+console.log('NOTION_API_SECRET:', NOTION_API_SECRET ? 'Provided' : 'Not Provided');
+console.log('DATABASE_ID:', DATABASE_ID);
+
 let postsCache: Post[] | null = null
 let dbCache: Database | null = null
 
