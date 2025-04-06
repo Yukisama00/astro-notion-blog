@@ -94,28 +94,26 @@ if (database.Icon && database.Icon.Type === 'file') {
           <div class="content">
             <header>
               <h1>
-                <a href={getNavLink('/')}>
-                  {
-                    database.Icon && database.Icon.Type === 'emoji' ? (
-                      <>
-                        <span>{database.Icon.Emoji}</span>
-                        {database.Title}
-                      </>
-                    ) : database.Icon && database.Icon.Type === 'external' ? (
-                      <>
-                        <img src={database.Icon.Url} />
-                        {database.Title}
-                      </>
-                    ) : database.Icon && database.Icon.Type === 'file' ? (
-                      <>
-                        <img src={customIconURL} class="custom-icon" />
-                        {database.Title}
-                      </>
-                    ) : (
-                      database.Title
-                    )
-                  }
-                </a>
+                {
+                  database.Icon && database.Icon.Type === 'emoji' ? (
+                    <>
+                      <span>{database.Icon.Emoji}</span>
+                      {database.Title}
+                    </>
+                  ) : database.Icon && database.Icon.Type === 'external' ? (
+                    <>
+                      <img src={database.Icon.Url} />
+                      {database.Title}
+                    </>
+                  ) : database.Icon && database.Icon.Type === 'file' ? (
+                    <>
+                      <img src={customIconURL} class="custom-icon" />
+                      {database.Title}
+                    </>
+                  ) : (
+                    database.Title
+                  )
+                }
               </h1>
               <div class="description">
                 {database.Description}
