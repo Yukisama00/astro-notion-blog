@@ -278,6 +278,7 @@ main header div.description {
   white-space: nowrap; /* 折り返しを防ぐ */
   overflow: hidden; /* はみ出した部分を隠す */
   text-overflow: ellipsis; /* はみ出した部分を省略記号にする */
+  margin-bottom: 1rem; /* author-section との間に余白を追加 */
 }
 
   main header .author-and-icons {
@@ -566,11 +567,12 @@ main header div.description {
   grid-template-columns: auto 1fr; /* 左にアイコン、右に内容 */
   grid-template-rows: auto auto; /* 行を2つに分ける */
   align-items: center; /* 縦方向にセンタリング */
-  gap: 1rem;
-  padding: 1rem;
+  gap: 1rem; /* 内部要素間のスペースを調整 */
+  padding: 1rem; /* 内側の余白を調整 */
   background-color: #f9f9f9; /* 背景色 */
   border: 1px solid #ddd; /* 枠線 */
   border-radius: 8px; /* 角丸 */
+  margin-top: 1rem; /* description との間に余白を追加 */
 }
 
 .author-info {
