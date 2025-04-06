@@ -120,6 +120,20 @@ if (database.Icon && database.Icon.Type === 'file') {
               <div class="description">
                 {database.Description}
               </div>
+              <div class="author-section">
+                <div class="author-info">
+                  <img src={getStaticFilePath('/icons/author-icon.png')} alt="Author Icon" class="author-icon" />
+                  <span class="author-name">Author: Yuki</span>
+                </div>
+                <div class="author-links">
+                  <a href="https://x.com/yukisama00" target="_blank" rel="noopener noreferrer">
+                    <img src={getStaticFilePath('/icons/x.svg')} alt="X" />
+                  </a>
+                  <a href="https://www.youtube.com/@altu4616" target="_blank" rel="noopener noreferrer">
+                    <img src={getStaticFilePath('/icons/youtube.svg')} alt="YouTube" />
+                  </a>
+                </div>
+              </div>
             </header>
 
             <slot name="main" />
@@ -257,7 +271,15 @@ if (database.Icon && database.Icon.Type === 'file') {
   main header div.description {
     padding: 0.3rem 0 0.6rem;
     font-size: 0.95rem;
+    margin-bottom: 1rem; /* Author との間に余白を追加 */
   }
+
+  main header .author-and-icons {
+  margin-top: 1rem; /* Description との間に余白を追加 */
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
 
   main footer {
     margin: 30px 0 10px;
@@ -532,5 +554,61 @@ if (database.Icon && database.Icon.Type === 'file') {
   height: auto; /* 高さを自動調整 */
   object-fit: contain; /* 比率を維持しながら収める */
 }
+.author-section {
+  display: grid;
+  grid-template-columns: auto 1fr; /* アイコンとリンクを横並びに */
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem;
+  background-color: #f9f9f9; /* 背景色を設定 */
+  border: 1px solid #ddd; /* 枠線を追加 */
+  border-radius: 8px; /* 角丸を設定 */
+}
 
+.author-info {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.author-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%; /* 丸いアイコンにする */
+}
+
+.author-name {
+  font-size: 1rem;
+  font-weight: bold;
+  color: #333;
+}
+
+.author-links {
+  display: flex;
+  flex-direction: column; /* 縦方向に並べる */
+  gap: 0.5rem; /* アイコン間のスペース */
+  align-items: stretch; /* アイコン幅を均等にする */
+}
+
+.author-links a {
+  display: flex;
+  justify-content: center; /* アイコンを中央揃え */
+  align-items: center;
+  flex: 1; /* 均等な幅を確保 */
+  padding: 0.5rem; /* アイコン周りの余白 */
+  background-color: #f4f4f4; /* 背景色 */
+  border: 1px solid #ddd; /* 枠線 */
+  border-radius: 4px; /* 角丸 */
+  text-decoration: none; /* リンクの下線を削除 */
+}
+
+.author-links a img {
+  width: 32px;
+  height: 32px;
+  transition: transform 0.3s ease;
+}
+
+.author-links a:hover img {
+  transform: scale(1.1); /* ホバー時に拡大 */
+}
 </style>
