@@ -566,15 +566,17 @@ if (database.Icon && database.Icon.Type === 'file') {
 }
 
 .author-info {
+  grid-column: 1 / 2; /* 左側の列に配置 */
   display: flex;
-  align-items: center;
-  gap: 0.5rem;
+  justify-content: center; /* 横方向に中央揃え */
+  align-items: center; /* 縦方向にセンタリング */
 }
 
 .author-icon {
   width: 48px;
   height: 48px;
   border-radius: 50%; /* 丸いアイコンにする */
+  align-items: center; /* アイコンを中央揃え */
 }
 
 .author-name {
@@ -588,6 +590,11 @@ if (database.Icon && database.Icon.Type === 'file') {
   flex-direction: column; /* 縦方向に並べる */
   gap: 0.5rem; /* アイコン間のスペース */
   align-items: stretch; /* アイコン幅を均等にする */
+}
+
+.author-name,
+.author-links {
+  grid-column: 2 / 3; /* 右側の列に配置 */
 }
 
 .author-links a {
