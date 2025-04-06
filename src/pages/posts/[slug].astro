@@ -24,6 +24,7 @@ import PostBody from '../../components/PostBody.astro'
 import PostRelativeLink from '../../components/PostRelativeLink.astro'
 import BlogPostsLink from '../../components/BlogPostsLink.astro'
 import BlogTagsLink from '../../components/BlogTagsLink.astro'
+import SNSLink from '../../components/SNSLink.astro'
 import styles from '../../styles/blog.module.css'
 
 export async function getStaticPaths() {
@@ -42,7 +43,7 @@ const [blocks, allPosts, rankedPosts, recentPosts, tags, postsHavingSameTag] =
   await Promise.all([
     getAllBlocksByBlockId(post.PageId),
     getAllPosts(),
-    getRankedPosts(),
+    getRankedPosts(5),
     getPosts(5),
     getAllTags(),
     getPostsByTag(post.Tags[0]?.name, 6),
@@ -113,15 +114,12 @@ if (post.FeaturedImage && post.FeaturedImage.Url) {
     </div>
   </div>
 
-  <div slot="aside" class="aside">
-    <BlogPostsLink
-      heading="Posts in the same category"
-      posts={postsHavingSameTag.filter(
-        (p: interfaces.Post) => p.Slug !== post.Slug
-      )}
-    />
-    <BlogPostsLink heading="Recommended" posts={rankedPosts} />
-    <BlogPostsLink heading="Latest posts" posts={recentPosts} />
-    <BlogTagsLink heading="Categories" tags={tags} />
+  <div slot="aside" class={styles.aside}>
+    <BlogPostsLink heading="最新記事" posts={rankedPosts} />
+    <BlogTagsLink heading="記事カテゴリ" tags={tags} />
+    <SNSLink heading="リンク" links={[
+      { href: 'https://x.com/yukisama00', src: '/icons/x.png', alt: 'X' },
+      { href: 'https://www.youtube.com/@altu4616', src: '/icons/youtube.png', alt: 'YouTube' },
+    ]} />
   </div>
 </Layout>

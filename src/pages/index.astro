@@ -22,7 +22,7 @@ import styles from '../styles/blog.module.css'
 
 const [posts, rankedPosts, tags, numberOfPages] = await Promise.all([
   getPosts(NUMBER_OF_POSTS_PER_PAGE),
-  getRankedPosts(),
+  getRankedPosts(5),
   getAllTags(),
   getNumberOfPages(),
 ])
