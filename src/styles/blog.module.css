@@ -20,3 +20,22 @@
   padding: 0;
   border: 0;
 }
+
+.post-title {
+  font-size: 1.5rem; /* タイトルのフォントサイズを調整 */
+  font-weight: bold; /* 太字に設定 */
+  margin-bottom: 0.5rem; /* タイトルの下に余白を追加 */
+}
+
+.post h1:not([class~="post-title"]),
+.post h2:not([class~="post-title"]),
+.post h3:not([class~="post-title"]) {
+  border-left: 4px solid #007BFF;
+  background-color: #f0f8ff;
+  padding: 8px 12px;
+  margin-bottom: 1.5rem;
+  font-family: 'Arial', sans-serif;
+  font-weight: bold;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
