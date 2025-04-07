@@ -28,6 +28,11 @@ export async function getStaticPaths() {
 
 const { tag } = Astro.params
 
+// タグ名をエスケープする関数
+function escapeTagName(tagName) {
+  return tagName.replace(/#/g, '%23')
+}
+
 const [posts, rankedPosts, tags, numberOfPages] = await Promise.all([
   getPostsByTag(tag, NUMBER_OF_POSTS_PER_PAGE),
   getRankedPosts(),
