@@ -9,6 +9,7 @@ import {
 import Layout from '../layouts/Layout.astro'
 import NoContents from '../components/NoContents.astro'
 import PostDate from '../components/PostDate.astro'
+import PostUpdateDate from '../components/PostUpdateDate.astro'
 import PostTags from '../components/PostTags.astro'
 import PostTitle from '../components/PostTitle.astro'
 import PostFeaturedImage from '../components/PostFeaturedImage.astro'
@@ -41,8 +42,11 @@ const links = [
       ) : (
         posts.map((post) => (
           <div class={`blog-post ${styles.post}`} key={post.Slug}>
-            <PostDate post={post} />
             <PostTitle post={post} />
+            <div style="display: flex; flex-wrap: wrap; column-gap:0.5rem;">
+              <PostDate post={post} />
+              <PostUpdateDate post={post} />
+            </div>
             <PostTags post={post} />
             <PostFeaturedImage post={post} />
             <PostExcerpt post={post} />
