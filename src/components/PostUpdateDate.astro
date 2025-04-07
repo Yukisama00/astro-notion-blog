@@ -1,5 +1,5 @@
 ---
-import { Post } from '../lib/interfaces.ts'
+import type { Post } from '../lib/interfaces.ts'
 import { getDateStr } from '../lib/blog-helpers.ts'
 
 export interface Props {
@@ -9,13 +9,15 @@ export interface Props {
 const { post } = Astro.props
 ---
 
-<div class="post-date">
-  {post.UpdateDate ? <span>LastUpdate : {getDateStr(post.UpdateDate)}</span> : ''}
+<div class="post-update-date">
+  {post.UpdateDate ? <span>最終更新日 : {getDateStr(post.UpdateDate)}</span> : ''}
 </div>
 
 <style>
-  .post-date {
-    margin-block: 0.3rem;
-    font-size: 0.9rem;
+  .post-update-date {
+    padding: 0;
+    font-size: 0.9rem; /* 作成日と同じフォントサイズに統一 */
+    line-height: 1.5; /* 高さを統一 */
+    display: inline-block; /* インライン要素として扱う */
   }
 </style>
