@@ -39,3 +39,17 @@
   border-radius: 4px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
+
+div.blog-post {
+  border: 1px solid var(--border-color); /* 枠線を追加 */
+  border-radius: var(--radius); /* 角丸を適用 */
+  margin-bottom: var(--gap); /* 各 blog-post 間に余白を追加 */
+  padding: var(--gap); /* 内側の余白を追加 */
+  background-color: var(--background-color); /* 背景色を設定 */
+  transition: transform 0.3s ease, box-shadow 0.3s ease; /* アニメーションを追加 */
+}
+
+div.blog-post:hover {
+  transform: scale(1.02); /* ホバー時に少し拡大 */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* ホバー時に影を追加 */
+}

@@ -40,7 +40,7 @@ const links = [
         <NoContents contents={posts} />
       ) : (
         posts.map((post) => (
-          <div class={styles.post} key={post.Slug}>
+          <div class={`blog-post ${styles.post}`} key={post.Slug}>
             <PostDate post={post} />
             <PostTitle post={post} />
             <PostTags post={post} />
