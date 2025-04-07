@@ -17,6 +17,7 @@ import ReadMoreLink from '../../../components/ReadMoreLink.astro'
 import Pagination from '../../../components/Pagination.astro'
 import BlogPostsLink from '../../../components/BlogPostsLink.astro'
 import BlogTagsLink from '../../../components/BlogTagsLink.astro'
+import SNSLink from '../../../components/SNSLink.astro'
 import styles from '../../../styles/blog.module.css'
 
 export async function getStaticPaths() {
@@ -37,14 +38,20 @@ const [posts, rankedPosts, tags, numberOfPages] = await Promise.all([
   getAllTags(),
   getNumberOfPages(),
 ])
+
+const links = [
+  { href: 'https://x.com/yukisama00', src: '/icons/x.png', alt: 'X' },
+  { href: 'https://www.youtube.com/@altu4616', src: '/icons/youtube.png', alt: 'YouTube' },
+]
 ---
 
 <Layout title={`Posts ${page}/${numberOfPages}`} path={`/posts/page/${page}`}>
   <div slot="main" class={styles.main}>
+    <!--
     <header>
       <div class="page-container">{page}/{numberOfPages}</div>
     </header>
-
+    -->
     {
       posts.length === 0 ? (
         <NoContents contents={posts} />
@@ -71,8 +78,9 @@ const [posts, rankedPosts, tags, numberOfPages] = await Promise.all([
   </div>
 
   <div slot="aside" class={styles.aside}>
-    <BlogPostsLink heading="Recommended" posts={rankedPosts} />
-    <BlogTagsLink heading="Categories" tags={tags} />
+    <BlogPostsLink heading="最新記事" posts={rankedPosts} />
+    <BlogTagsLink heading="記事カテゴリ" tags={tags} />
+    <SNSLink heading="リンク" links={links} />
   </div>
 </Layout>
 
