@@ -38,6 +38,11 @@ const [posts, rankedPosts, tags, numberOfPages] = await Promise.all([
 ])
 
 const currentTag = posts[0].Tags.find((t) => t.name === tag)
+
+const links = [
+  { href: 'https://x.com/yukisama00', src: '/icons/x.png', alt: 'X' },
+  { href: 'https://www.youtube.com/@altu4616', src: '/icons/youtube.png', alt: 'YouTube' },
+]
 ---
 
 <Layout title={`Posts in ${tag}`} path={`/posts/tag/${tag}`}>
