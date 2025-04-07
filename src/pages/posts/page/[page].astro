@@ -34,7 +34,7 @@ const { page } = Astro.params
 
 const [posts, rankedPosts, tags, numberOfPages] = await Promise.all([
   getPostsByPage(parseInt(page, 10)),
-  getRankedPosts(),
+  getRankedPosts(5),
   getAllTags(),
   getNumberOfPages(),
 ])
@@ -45,7 +45,7 @@ const links = [
 ]
 ---
 
-<Layout title={`Posts ${page}/${numberOfPages}`} path={`/posts/page/${page}`}>
+<Layout title="トゲトゲしっぽの飼育・繁殖記" path={`/posts/page/${page}`}>
   <div slot="main" class={styles.main}>
     <!--
     <header>
