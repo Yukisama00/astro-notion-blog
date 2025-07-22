@@ -152,6 +152,523 @@ if (database.Icon && database.Icon.Type === 'file') {
     min-height: 100dvh;
     background: #fff;
     border-radius: 16px;
+    /* メインコンテナのシャドウ - 最も重要なので残す */
+    box-shadow: 0 8px 32px rgba(0,0,0,0.12);
+    padding: 0;
+    margin: 32px auto;
+    max-width: 1280px;
+    border: none;
+    /* height: 100dvh; を削除 - コンテンツに応じて高さを自動調整 */
+    overflow: hidden; /* 角丸からのはみ出しを防ぐ */
+  }
+
+  .container > div {
+    display: flex;
+    max-width: 1280px;
+    align-items: stretch;
+    min-height: calc(100dvh - 64px); /* 上下マージン32px×2を引いた値 */
+    /* height: 100%; を削除 */
+  }
+  @media (max-width: 640px) {
+    .container > div {
+      display: block;
+    }
+  }
+
+  main {
+    flex: 1;
+    order: 2;
+    justify-content: space-between;
+    display: flex;
+    flex-direction: column;
+    /* height: 100%; を削除 - コンテンツに応じて自動調整 */
+    min-height: 0;
+    margin-right: 40px;
+  }
+  @media (max-width: 640px) {
+    main {
+      order: 1;
+    }
+  }
+
+  aside {
+    width: 300px;
+    padding: 16px 8px;
+    background: #f8f9fa;
+    border-radius: 0 12px 12px 0; /* 右側の角丸のみ */
+    /* asideのシャドウを削除 - containerのシャドウで十分 */
+    border: none;
+    margin-left: 40px;
+    /* height: 100%; を削除 - コンテンツに応じて自動調整 */
+    min-height: 0;
+    box-sizing: border-box;
+    overflow: hidden;
+    position: relative;
+  }
+  @media (max-width: 640px) {
+    aside {
+      order: 2;
+      width: 100%;
+      border-radius: 0; /* モバイルでは角丸なし */
+    }
+  }
+
+  div.cover {
+  }
+  div.cover img {
+    display: block;
+    width: 100%;
+    height: 20vh;
+    object-fit: cover;
+    object-position: center 60%;
+    margin-bottom: 1.5rem;
+  }
+
+  div.content {
+    background: #fff;
+    /* contentのシャドウを削除 - containerのシャドウで十分 */
+    border-radius: 0;
+    padding: 32px 48px;
+    margin: 0;
+    /* 代わりに微細なボーダーで区切りを表現 */
+    border-right: 1px solid rgba(0,0,0,0.06);
+  }
+
+  /* 記事リストの区切り線と余白 */
+  .post-list > article:not(:last-child) {
+    border-bottom: 1px solid #e0e0e0;
+    margin-bottom: 2.5rem;
+    padding-bottom: 2.5rem;
+  }
+  .post-list > article {
+    background: #fff;
+    border-radius: 8px;
+    /* 記事カードのシャドウを軽減 - ホバー時のみ強調 */
+    box-shadow: none;
+    border: 1px solid rgba(0,0,0,0.08);
+    padding: 1.5rem 1rem;
+    margin-bottom: 2rem;
+    transition: all 0.2s ease;
+  }
+  .post-list > article:hover {
+    /* ホバー時のみシャドウを表示 */
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    border-color: rgba(0,0,0,0.12);
+    transform: translateY(-1px);
+  }
+  @media (max-width: 640px) {
+    div.content {
+      padding: 0 18px;
+      border-right: none;
+    }
+  }
+
+  main header {
+    padding: 20px 0 20px;
+  }
+
+  main header h1 {
+    /* ブログタイトル削除に伴い不要なスタイルを削除 */
+  }
+
+  main header div.description {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.75rem !important;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  main header .author-and-icons {
+    margin-top: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  main footer {
+    margin: 30px 0 10px;
+    text-align: center;
+    font-size: 0.75rem;
+  }
+  @media (max-width: 640px) {
+    main footer {
+      margin: 0 auto 30px;
+    }
+  }
+  main footer span {
+    color: #777;
+  }
+  main footer a {
+    color: inherit;
+    text-decoration: underline;
+  }
+
+  .author-section {
+    background: #f8f9fa;
+    border-radius: 8px;
+    /* author-sectionのシャドウを削除し、ボーダーで代替 */
+    border: 1px solid rgba(0,0,0,0.08);
+    margin-top: 0;
+    padding: 0.5rem;
+  }
+  @media (max-width: 640px) {
+    .author-section {
+      margin-top: 1rem;
+      padding: 0.5rem;
+    }
+  }
+</style>
+
+<!--グローバルスタイルも一部修正-->
+<style is:global>
+  :root {
+    --gap-quarter: 0.25rem;
+    --gap-half: 0.5rem;
+    --gap: 1rem;
+    --gap-double: 2rem;
+
+    --primary-color: #0078d4;
+    --secondary-color: #f4f4f4;
+    --text-color: #333333;
+    --background-color: #ffffff;
+    --border-color: rgba(0,0,0,0.1); /* より軽いボーダー色に変更 */
+
+    --bg: #fff;
+    --fg: #333;
+    --accents-1: #666;
+    --accents-2: #666;
+    --accents-3: #666;
+    --geist-foreground: #000;
+    --geist-success: #690;
+
+    --radius: 4px;
+
+    --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto',
+      'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans',
+      'Helvetica Neue', sans-serif;
+    --font-mono: SFMono-Regular, Menlo, Consolas, 'PT Mono', 'Liberation Mono',
+      Courier, monospace;
+  }
+
+  * {
+    box-sizing: border-box;
+    word-break: break-word;
+  }
+
+  html,
+  body {
+    padding: 0;
+    margin: 0;
+    font-size: 16px;
+  }
+
+  body {
+    min-height: 100vh;
+    background-color: var(--background-color);
+    color: var(--text-color);
+    font-family: var(--font-sans);
+    background-position: 0 0, 25px 25px;
+    background-attachment: fixed;
+    background-size: 50px 50px;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  figure {
+    margin: 0;
+    font-size: 0.85rem;
+    color: #999;
+    line-height: 1.8rem;
+  }
+
+  a {
+    color: var(--primary-color);
+    text-decoration: none;
+  }
+  a:hover {
+    color: darken(var(--primary-color), 10%);
+  }
+
+  /* グローバルコンテナのボーダーを削除 */
+  .container {
+    border: none;
+  }
+
+  mark {
+    padding: var(--gap-quarter);
+    border-radius: var(--radius);
+    background: rgba(247, 212, 255, 0.8);
+  }
+
+  h1 {
+    margin: 0;
+    color: var(--fg);
+    font-size: 2rem;
+    font-weight: 700;
+  }
+
+  h2 {
+    margin: 0;
+    color: var(--fg);
+    line-height: 1.3;
+    font-size: 1.2rem;
+    font-weight: normal;
+  }
+  h2 > span.tag {
+    border-radius: 4px;
+    padding: 3px 9px;
+    background: rgba(227, 226, 224, 0.5);
+  }
+
+  h3 {
+    margin: 0;
+    color: var(--fg);
+    font-size: 1.2rem;
+    font-weight: 700;
+  }
+
+  @media (max-width: 640px) {
+    h1 {
+      font-size: 1.6rem;
+    }
+
+    h2 {
+      font-size: 1.15rem;
+    }
+
+    h3 {
+      font-size: 1.15rem;
+    }
+  }
+
+  ol {
+    color: #222;
+    font-weight: 400;
+    font-size: 0.9rem;
+    line-height: 1.8rem;
+  }
+  p,
+  ul {
+    color: #222;
+    font-weight: 400;
+    font-size: 1rem;
+    line-height: 1.8rem;
+  }
+  ul,
+  ol {
+    margin: 0;
+    padding-inline-start: 1.5rem;
+  }
+  pre {
+    margin: 0;
+    white-space: pre;
+    tab-size: 2;
+  }
+  pre :global(code) {
+    overflow: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  hr {
+    display: block;
+    height: 1px;
+    border: 0;
+    margin: 0.3rem 0;
+    background-color: #333;
+  }
+
+  code {
+    font-size: 0.9rem;
+    background: #f1f1f1;
+    color: #eb5757;
+    padding: 0.25rem;
+    border-radius: var(--radius);
+    font-family: var(--font-mono);
+  }
+
+  table {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+    border-collapse: collapse;
+  }
+
+  table tr {
+    vertical-align: top;
+  }
+
+  table th {
+    font-weight: 600;
+    background-color: #f4f4f4;
+  }
+
+  table td,
+  table th {
+    font-size: 0.9rem;
+    border: 1px solid #e4e4e4;
+    padding: 0.5rem 1rem;
+    text-align: left;
+    line-height: 1.2rem;
+  }
+  table td::after {
+    content: '';
+    display: inline-block;
+    min-height: 0.9rem;
+  }
+  
+  .pagetop {
+    height: 50px;
+    width: 50px;
+    position: fixed;
+    right: 30px;
+    bottom: 30px;
+    border: solid 2px var(--fg);
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 2;
+  }
+  
+  .pagetop__arrow {
+    height: 10px;
+    width: 10px;
+    border-top: 3px solid var(--fg);
+    border-right: 3px solid var(--fg);
+    transform: translateY(20%) rotate(-45deg);
+  }
+  
+  @media (hover: hover) and (pointer: fine) {
+    .pagetop:hover, .pagetop:hover .pagetop__arrow {
+      border-color: var(--accents-1);
+    }
+  }
+
+  .sns-icons {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    margin-bottom: 20px;
+    width: 100%;
+  }
+  .sns-icons a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 1;
+    padding: 10px;
+    background-color: #f4f4f4;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    text-decoration: none;
+    transition: all 0.2s ease;
+  }
+  .sns-icons a:hover {
+    background-color: #e0e0e0;
+    /* ホバー時に軽いシャドウを追加 */
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  }
+  .sns-icons a img {
+    width: 48px;
+    height: auto;
+    object-fit: contain;
+  }
+
+  .author-section {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    grid-template-rows: auto auto;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    margin-top: 1rem;
+    height: auto;
+  }
+
+  .author-info {
+    grid-column: 1 / 2;
+    grid-row: 1 / 3;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .author-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+  }
+
+  .author-name {
+    font-size: 0.8rem;
+    font-weight: bold;
+    color: #333;
+  }
+
+  .author-links {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.5rem;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .author-name,
+  .author-links {
+    grid-column: 2 / 3;
+  }
+
+  .author-links a {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 36px;
+    padding: 0;
+    background-color: #f4f4f4;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    text-decoration: none;
+    transition: all 0.2s ease;
+  }
+
+  .author-links a:hover {
+    background-color: #e0e0e0;
+    /* ホバー時に軽いシャドウを追加 */
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  }
+
+  .author-links a img {
+    width: 24px;
+    height: 24px;
+    object-fit: contain;
+  }
+
+  .author-links a.youtube img {
+    width: 80%;
+    height: 80%;
+    object-fit: contain;
+  }
+
+  .author-links a:hover img {
+    transform: scale(1.1); /* ホバー時の拡大を控えめに */
+  }
+</style>
+
+
+<!--
+<style>
+  .container {
+    min-height: 100dvh;
+    background: #fff;
+    border-radius: 16px;
     box-shadow: 0 4px 24px rgba(0,0,0,0.08);
     padding: 0;
     margin: 32px auto;
@@ -189,9 +706,8 @@ if (database.Icon && database.Icon.Type === 'file') {
   }
 
   aside {
-    order: 1;
     width: 300px;
-    padding: 20px 20px;
+    padding: 16px 8px;
     background: #f8f9fa;
     border-radius: 12px;
     box-shadow: 0 2px 12px rgba(0,0,0,0.04);
@@ -200,6 +716,8 @@ if (database.Icon && database.Icon.Type === 'file') {
     height: 100%;
     min-height: 0;
     box-sizing: border-box;
+    overflow: hidden;
+    position: relative;
   }
   @media (max-width: 640px) {
     aside {
@@ -644,3 +1162,4 @@ main header div.description {
 
 
 </style>
+-->
