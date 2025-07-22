@@ -117,6 +117,9 @@ if (database.Icon && database.Icon.Type === 'file') {
 
             <footer>
               <div>
+                <a href="/" style="color:inherit; text-decoration:underline;">{database.Title}</a>
+              </div>
+              <div>
                 <span>Powered by&nbsp;</span>
                 <a href="https://github.com/otoyo/astro-notion-blog"
                   >astro-notion-blog</a
@@ -222,6 +225,24 @@ if (database.Icon && database.Icon.Type === 'file') {
     box-shadow: 0 2px 12px rgba(0,0,0,0.04);
     padding: 32px 48px;
     margin: 0;
+  }
+
+  /* 記事リストの区切り線と余白 */
+  .post-list > article:not(:last-child) {
+    border-bottom: 1px solid #e0e0e0;
+    margin-bottom: 2.5rem;
+    padding-bottom: 2.5rem;
+  }
+  .post-list > article {
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+    padding: 1.5rem 1rem;
+    margin-bottom: 2rem;
+    transition: box-shadow 0.2s;
+  }
+  .post-list > article:hover {
+    box-shadow: 0 4px 16px rgba(0,0,0,0.08);
   }
   @media (max-width: 640px) {
     div.content {
