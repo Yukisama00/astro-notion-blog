@@ -75,6 +75,7 @@ if (database.Icon && database.Icon.Type === 'file') {
       integrity="sha384-vKruj+a13U8yHIkAyGgK1J3ArTLzrFGBbBc0tDp4ad/EyewESeXE/Iv67Aj8gKZ0"
       crossorigin="anonymous"
     />
+    <link rel="sitemap" href="/sitemap-index.xml" />
   </head>
   <body>
     <GoogleAnalytics trackingId={PUBLIC_GA_TRACKING_ID} />
@@ -167,6 +168,13 @@ if (database.Icon && database.Icon.Type === 'file') {
 <style>
   .container {
     min-height: 100vh;
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+    padding: 0;
+    margin: 32px auto;
+    max-width: 1280px;
+    border: none;
   }
 
   .container > div {
@@ -194,9 +202,11 @@ if (database.Icon && database.Icon.Type === 'file') {
     order: 1;
     width: 300px;
     padding: 20px 20px;
-    background-color: #f4f4f4;
-    position: sticky;
-    top: 0;
+    background: #f8f9fa;
+    border-radius: 12px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+    border: none;
+    margin-left: 24px;
     height: 100vh;
   }
   @media (max-width: 640px) {
@@ -218,7 +228,11 @@ if (database.Icon && database.Icon.Type === 'file') {
   }
 
   div.content {
-    padding: 20px 40px;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+    padding: 32px 48px;
+    margin: 24px 0;
   }
   @media (max-width: 640px) {
     div.content {
@@ -280,7 +294,6 @@ main header div.description {
   white-space: nowrap; /* 折り返しを防ぐ */
   overflow: hidden; /* はみ出した部分を隠す */
   text-overflow: ellipsis; /* はみ出した部分を省略記号にする */
-  text-align: center; /* テキストを中央揃え */
 }
 
   main header .author-and-icons {
@@ -306,6 +319,21 @@ main header div.description {
   main footer a {
     color: inherit;
     text-decoration: underline;
+  }
+
+  .author-section {
+    background: #f8f9fa;
+    border-radius: 8px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.03);
+    margin-top: 2rem;
+    padding: 1rem;
+    border: none;
+  }
+  @media (max-width: 640px) {
+    .author-section {
+      margin-top: 1rem;
+      padding: 0.5rem;
+    }
   }
 </style>
 
