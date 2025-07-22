@@ -31,22 +31,34 @@ const { heading, links } = Astro.props
 
 .sns-icons {
   display: flex;
-  gap: 10px;
-  align-items: center; /* アイコンを中央揃え */
+  gap: 8px; /* Layout.astroの.author-linksと同じに */
+  justify-content: center;
+  align-items: center;
 }
 
 .sns-icons a {
-    display: flex;
-    align-items: center; /* アイコンとリンクを中央揃え */
-    justify-content: center;
-    width: 40px; /* アイコンのクリック領域を統一 */
-    height: 40px;
-  }
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;   /* Layout.astroの.author-links aと同じ */
+  height: 36px;
+  background: #fff;
+  border: 1px solid rgba(148, 163, 184, 0.2);
+  border-radius: 8px;
+  transition: all 0.2s ease;
+  text-decoration: none;
+}
+
+.sns-icons a:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  border-color: #3b82f6;
+}
 
 .sns-icons img {
-  width: auto; /* 幅を自動調整 */
-  height: 24px; /* 高さを固定 */
-  object-fit: contain; /* 比率を維持しながら収める */
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
   transition: transform 0.3s ease;
 }
 </style>
