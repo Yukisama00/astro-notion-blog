@@ -420,105 +420,100 @@ if (database.Icon && database.Icon.Type === 'file') {
   background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
   border-radius: 16px;
   border: 1px solid #e2e8f0;
-  padding: 32px 24px;
+  padding: 16px 24px; /* 32px → 16px に半減 */
   text-align: center;
-  transition: all 0.3s ease;
-  }
+  /* hover効果を削除 */
+}
 
-  .author-section:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 12px 28px rgba(0,0,0,0.12);
-  }
+.author-name {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #1e293b;
+  margin-bottom: 4px; /* 8px → 4px に半減 */
+}
 
-  .author-name {
-    font-size: 1rem;
-    font-weight: 600;
-    color: #1e293b;
-    margin-bottom: 8px;
-  }
+.author-avatar-container {
+  margin-bottom: 12px; /* 20px → 12px に削減 */
+}
 
-  .author-avatar-container {
-  margin-bottom: 20px;
-  }
-
-  .author-avatar {
-  width: 64px;
-  height: 64px;
+.author-avatar {
+  width: 48px; /* 64px → 48px に縮小 */
+  height: 48px; /* 64px → 48px に縮小 */
   border-radius: 50%;
   border: 3px solid white;
   box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-  }
+}
 
-  .author-info {
-  margin-bottom: 20px;
-  }
+.author-info {
+  margin-bottom: 12px; /* 20px → 12px に削減 */
+}
 
-  .author-name {
-  font-size: 1.5rem;
+.author-name {
+  font-size: 1.25rem; /* 1.5rem → 1.25rem に縮小 */
   font-weight: 700;
   color: #1e293b;
-  margin-bottom: 8px;
-  }
+  margin-bottom: 4px; /* 8px → 4px に半減 */
+}
 
-  .author-title {
+.author-title {
   font-size: 0.875rem;
   color: #64748b;
   margin-bottom: 0;
-  }
+}
 
-  .author-links {
+.author-links {
   display: flex;
-  gap: 12px;
+  gap: 8px; /* 12px → 8px に削減 */
   justify-content: center;
-  }
+}
 
-  .author-links a {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 40px;
-    height: 40px;
-    background: #ffffff;
-    border: 1px solid rgba(148, 163, 184, 0.2);
-    border-radius: 10px;
-    transition: all 0.2s ease;
-    text-decoration: none;
-  }
-
-  .author-links a:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-    border-color: #3b82f6;
-  }
-
-  .social-link {
+.author-links a {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 44px;
-  height: 44px;
+  width: 36px; /* 40px → 36px に縮小 */
+  height: 36px; /* 40px → 36px に縮小 */
+  background: #ffffff;
+  border: 1px solid rgba(148, 163, 184, 0.2);
+  border-radius: 8px; /* 10px → 8px に縮小 */
+  transition: all 0.2s ease;
+  text-decoration: none;
+}
+
+.author-links a:hover {
+  transform: translateY(-1px); /* -2px → -1px に軽減 */
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1); /* 影を軽減 */
+  border-color: #3b82f6;
+}
+
+.social-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px; /* 44px → 36px に縮小 */
+  height: 36px; /* 44px → 36px に縮小 */
   background: white;
   border: 2px solid #e2e8f0;
   border-radius: 50%;
   color: #64748b;
   text-decoration: none;
   transition: all 0.2s ease;
-  }
+}
 
-  .social-link:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-  }
+.social-link:hover {
+  transform: translateY(-1px); /* -2px → -1px に軽減 */
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1); /* 影を軽減 */
+}
 
-  .social-link.twitter:hover {
+.social-link.twitter:hover {
   border-color: #1d9bf0;
   color: #1d9bf0;
-  }
+}
 
-  .social-link.youtube:hover {
+.social-link.youtube:hover {
   border-color: #ff0000;
   color: #ff0000;
-  }
+}
 
   /* フッター */
   main footer {
