@@ -22,11 +22,11 @@
 </div>
 
 <style>
-  div.search-modal-container {
+  .search-modal-container {
     display: none;
   }
 
-  div.overlay {
+  .overlay {
     z-index: 99;
     position: fixed;
     top: 0;
@@ -36,68 +36,124 @@
     background-color: rgba(0, 0, 0, 0.5);
   }
 
-  div.search-modal {
+  .search-modal {
     z-index: 100;
     position: fixed;
     top: 100px;
     left: 20%;
     width: 60%;
-    border-radius: 6px;
-    background-color: var(--bg);
+    border-radius: 8px;
+    background-color: white;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+    border: 1px solid #e0e0e0;
+    overflow: hidden;
   }
+  
   @media (max-width: 640px) {
-    div.search-modal {
-      left: 0;
-      width: 100%;
+    .search-modal {
+      left: 5%;
+      width: 90%;
+      top: 50px;
     }
   }
 
-  div.search-prompt {
-    margin: 6px 0;
-    padding: 0 6px;
+  .search-prompt {
+    margin: 0;
+    padding: 16px;
+    background-color: #f8f9fa;
+    border-bottom: 1px solid #e0e0e0;
   }
-  div.search-prompt input {
+  
+  .search-prompt input {
     width: 100%;
-    border: 0px solid transparent;
-    padding: 0.4rem;
-    background-color: var(--input-bg);
-    color: var(--fg);
-    font-size: 1.2rem;
-    line-height: 1.6rem;
+    border: 2px solid #e0e0e0;
+    border-radius: 6px;
+    padding: 12px 16px;
+    background-color: white;
+    color: #333;
+    font-size: 16px;
+    line-height: 1.4;
+    outline: none;
+    transition: border-color 0.2s ease;
+  }
+  
+  .search-prompt input:focus {
+    border-color: #0066cc;
+    box-shadow: 0 0 0 3px rgba(0, 102, 204, 0.1);
   }
 
-  div.search-result {
-    border-top: 1px solid var(--hr-border);
-    background-color: #fff;
+  .search-result {
+    background-color: white;
+    max-height: 400px;
+    overflow-y: auto;
   }
-  div.search-result ul {
+  
+  .search-result ul {
     list-style: none;
-    margin: 0.3rem;
+    margin: 0;
+    padding: 8px 0;
+  }
+  
+  .search-result li {
+    margin: 0;
     padding: 0;
   }
-  div.search-result ul > :global(li) {
-  }
-  div.search-result ul > :global(li > a) {
+  
+  .search-result li a {
     display: block;
-    padding: 0.4rem 0.6rem;
-    border-radius: var(--radius);
+    padding: 12px 16px;
+    text-decoration: none;
+    color: #333;
+    transition: all 0.15s ease;
+    border-left: 3px solid transparent;
   }
-  div.search-result ul > :global(li.selected > a) {
-    background-color: rgba(241, 241, 239, 1);
+  
+  .search-result li a:hover {
+    background-color: #f0f7ff;
+    border-left-color: #0066cc;
+  }
+  
+  .search-result li.selected a {
+    background-color: #0066cc;
+    color: white;
+    border-left-color: #004499;
   }
 
-  div.search-result :global(div.search-result-title) {
-    padding: 0.1rem 0;
-    color: var(--fg);
-    font-size: 1.1rem;
-    line-height: 1.2rem;
-    font-weight: bold;
+  .search-result-title {
+    padding: 0;
+    color: inherit;
+    font-size: 16px;
+    line-height: 1.3;
+    font-weight: 600;
+    margin-bottom: 4px;
   }
-  div.search-result :global(div.search-result-description) {
-    margin: 0 0 0.1rem;
-    color: var(--fg);
-    font-size: 0.9rem;
-    line-height: 1.2rem;
+  
+  .search-result-description {
+    margin: 0;
+    color: inherit;
+    opacity: 0.8;
+    font-size: 14px;
+    line-height: 1.4;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  
+  .search-result li.selected .search-result-description {
+    opacity: 0.9;
+  }
+
+  .no-results, .error-message {
+    padding: 24px 16px;
+    text-align: center;
+    color: #666;
+    font-style: italic;
+  }
+  
+  .error-message {
+    color: #dc3545;
+    font-weight: 600;
+    font-style: normal;
   }
 </style>
 
@@ -105,27 +161,41 @@
   document.addEventListener('DOMContentLoaded', async () => {
     let feedItems = []
     let fetched = false
+    let isModalOpen = false
 
     async function openModal() {
+      isModalOpen = true
       document.querySelector('.search-modal-container').style.display = 'block'
       document.querySelector('.search-prompt input').focus()
 
       if (!fetched) {
-        await fetchRSS()
+        try {
+          await fetchRSS()
+        } catch (error) {
+          console.error('Failed to fetch RSS:', error)
+          renderError()
+          return
+        }
       }
       searchAndRender()
     }
 
     function closeModal() {
+      isModalOpen = false
       document.querySelector('.search-modal-container').style.display = 'none'
+      document.querySelector('.search-prompt input').value = ''
     }
 
     function handleKeydown(event) {
+      if (!isModalOpen) return
+
       if (event.keyCode === 13) {
         // Enter
+        event.preventDefault()
         select()
       } else if (event.keyCode === 27) {
         // ESC
+        event.preventDefault()
         closeModal()
       } else if (event.keyCode === 38) {
         // Up
@@ -133,17 +203,28 @@
       } else if (event.keyCode === 40) {
         // Down
         selectDown(event)
-      } else {
+      }
+    }
+
+    function handleInput() {
+      if (isModalOpen) {
         searchAndRender()
       }
     }
 
     function select() {
       const a = document.querySelector('.search-result ul > li.selected a')
-      a.click()
+      if (a && a.href !== '#') {
+        window.location.href = a.href
+      }
     }
 
     function selectFirst() {
+      const currentSelected = document.querySelector('.search-result ul > li.selected')
+      if (currentSelected) {
+        currentSelected.classList.remove('selected')
+      }
+
       const li = document.querySelector('.search-result ul > li:first-child')
       if (li) {
         li.classList.add('selected')
@@ -164,7 +245,10 @@
           ul.lastElementChild.classList.add('selected')
         }
       } else {
-        ul.lastElementChild.classList.add('selected')
+        const lastChild = ul.lastElementChild
+        if (lastChild) {
+          lastChild.classList.add('selected')
+        }
       }
     }
 
@@ -182,15 +266,24 @@
           ul.firstElementChild.classList.add('selected')
         }
       } else {
-        ul.firstElementChild.classList.add('selected')
+        const firstChild = ul.firstElementChild
+        if (firstChild) {
+          firstChild.classList.add('selected')
+        }
       }
     }
 
     function handleMouseover(event) {
-      Array.from(event.target.closest('ul').children).forEach((element) => {
+      const ul = event.target.closest('ul')
+      if (!ul) return
+
+      Array.from(ul.children).forEach((element) => {
         element.classList.remove('selected')
       })
-      event.target.closest('li').classList.add('selected')
+      const li = event.target.closest('li')
+      if (li) {
+        li.classList.add('selected')
+      }
     }
 
     function searchAndRender() {
@@ -208,8 +301,13 @@
 
     function search(query) {
       const results = []
+      const lowerQuery = query.toLowerCase()
+
       feedItems.forEach((item) => {
-        if (item.title.includes(query) || item?.description?.includes(query)) {
+        const titleMatch = item.title.toLowerCase().includes(lowerQuery)
+        const descriptionMatch = item?.description?.toLowerCase().includes(lowerQuery)
+        
+        if (titleMatch || descriptionMatch) {
           results.push(item)
         }
       })
@@ -220,17 +318,27 @@
       const ul = document.querySelector('.search-result ul')
       ul.innerHTML = ''
 
+      if (results.length === 0) {
+        const li = document.createElement('li')
+        const div = document.createElement('div')
+        div.className = 'no-results'
+        div.textContent = '検索結果が見つかりませんでした'
+        li.appendChild(div)
+        ul.appendChild(li)
+        return
+      }
+
       results.forEach((item) => {
         const li = document.createElement('li')
         const a = document.createElement('a')
         const title = document.createElement('div')
         const description = document.createElement('div')
 
-        title.classList.add('search-result-title')
-        title.textContent = item.title
-        description.classList.add('search-result-description')
-        description.textContent = item.description
-        a.href = item.link
+        title.className = 'search-result-title'
+        title.textContent = item.title || 'タイトルなし'
+        description.className = 'search-result-description'
+        description.textContent = item.description || ''
+        a.href = item.link || '#'
 
         li.addEventListener('mouseover', handleMouseover)
 
@@ -241,6 +349,18 @@
       })
     }
 
+    function renderError() {
+      const ul = document.querySelector('.search-result ul')
+      ul.innerHTML = ''
+      
+      const li = document.createElement('li')
+      const div = document.createElement('div')
+      div.className = 'error-message'
+      div.textContent = 'RSSフィードの取得に失敗しました'
+      li.appendChild(div)
+      ul.appendChild(li)
+    }
+
     async function fetchRSS() {
       const url = new URL(location.href)
       const port = url.port ? `:${url.port}` : ''
@@ -248,9 +368,9 @@
       const res = await fetch(
         `${url.protocol}//${url.hostname}${port}/feed`
       )
+      
       if (res.status !== 200) {
-        console.log(res.status)
-        throw new Error('Failed to fetch RSS feed')
+        throw new Error(`HTTP ${res.status}: Failed to fetch RSS feed`)
       }
 
       const body = await res.text()
@@ -258,12 +378,26 @@
       const parser = new DOMParser()
       const xml = parser.parseFromString(body, 'text/xml')
 
-      Array.from(xml.getElementsByTagName('item')).forEach((item) => {
-        const title = item.getElementsByTagName('title')[0].textContent
-        const link = item.getElementsByTagName('link')[0].textContent
-        const description =
-          item.getElementsByTagName('description')[0]?.textContent
-        const pubDate = item.getElementsByTagName('pubDate')[0].textContent
+      const parseError = xml.querySelector('parsererror')
+      if (parseError) {
+        throw new Error('Invalid XML format')
+      }
+
+      const items = xml.getElementsByTagName('item')
+      if (items.length === 0) {
+        console.warn('No items found in RSS feed')
+      }
+
+      Array.from(items).forEach((item) => {
+        const titleEl = item.getElementsByTagName('title')[0]
+        const linkEl = item.getElementsByTagName('link')[0]
+        const descriptionEl = item.getElementsByTagName('description')[0]
+        const pubDateEl = item.getElementsByTagName('pubDate')[0]
+
+        const title = titleEl?.textContent || 'タイトルなし'
+        const link = linkEl?.textContent || '#'
+        const description = descriptionEl?.textContent || ''
+        const pubDate = pubDateEl?.textContent || ''
 
         feedItems.push({
           title,
@@ -276,14 +410,20 @@
       fetched = true
     }
 
+    // イベントリスナーの設定
     Array.from(document.getElementsByClassName('open-search-modal')).forEach(
       (element) => {
         element.addEventListener('click', openModal)
       }
     )
+    
     document
       .getElementsByClassName('overlay')[0]
       .addEventListener('click', closeModal)
+    
     document.addEventListener('keydown', handleKeydown)
+    
+    document.querySelector('.search-prompt input')
+      .addEventListener('input', handleInput)
   })
 </script>
