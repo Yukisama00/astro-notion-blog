@@ -156,19 +156,21 @@ if (database.Icon && database.Icon.Type === 'file') {
 
 <style>
   .container {
-    min-height: 100dvh;
-    background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
-    border-radius: 24px;
-    box-shadow: 
-      0 20px 60px rgba(0,0,0,0.12),
-      0 8px 25px rgba(0,0,0,0.08);
-    padding: 0;
-    margin: 24px auto;
-    max-width: 1400px;
-    border: none;
-    overflow: hidden;
-    position: relative;
-  }
+  min-height: 100dvh;
+  background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+  border-radius: 24px;
+  box-shadow: 
+    0 20px 60px rgba(0,0,0,0.12),
+    0 8px 25px rgba(0,0,0,0.08);
+  padding: 0;
+  margin: 24px auto;
+  /* レスポンシブな幅設定 */
+  max-width: min(1400px, calc(100vw - 48px)); /* 画面幅から余白を引いた値と最大幅の小さい方 */
+  width: 100%;
+  border: none;
+  overflow: hidden;
+  position: relative;
+}
 
   /* 微細なグラデーション効果 */
   .container::before {
@@ -919,4 +921,77 @@ body {
       padding: 4px 8px;
     }
   }
+  /* 大きなデスクトップ画面での調整 */
+@media (min-width: 1600px) {
+  .container {
+    max-width: min(1200px, calc(100vw - 200px)); /* 大画面では相対的に小さく */
+  }
+}
+
+/* 中程度のデスクトップ画面での調整 */
+@media (min-width: 1200px) and (max-width: 1599px) {
+  .container {
+    max-width: calc(100vw - 100px); /* 画面幅から適度な余白 */
+  }
+}
+
+/* 小さなデスクトップ・大きなタブレット */
+@media (min-width: 1024px) and (max-width: 1199px) {
+  .container {
+    max-width: calc(100vw - 80px);
+    margin: 20px auto;
+  }
+}
+
+/* タブレット */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .container {
+    max-width: calc(100vw - 40px);
+    margin: 16px auto;
+    border-radius: 20px;
+  }
+  
+  aside {
+    width: 280px; /* サイドバーを少し狭く */
+  }
+}
+
+/* スマートフォン（既存のまま維持）*/
+@media (max-width: 767px) {
+  .container > div {
+    display: block;
+    gap: 0;
+  }
+  .container {
+    margin: 12px;
+    border-radius: 16px;
+  }
+}
+
+/* コンテンツエリアの調整 */
+@media (min-width: 1400px) {
+  div.content {
+    padding: 40px min(48px, 4vw); /* 画面幅に応じてパディングを調整 */
+  }
+}
+
+@media (min-width: 1024px) and (max-width: 1399px) {
+  div.content {
+    padding: 36px min(40px, 3.5vw);
+  }
+}
+
+/* サイドバーの幅調整 */
+@media (min-width: 1200px) {
+  aside {
+    width: min(320px, 25vw); /* 画面幅の25%か320pxの小さい方 */
+  }
+}
+
+@media (min-width: 1024px) and (max-width: 1199px) {
+  aside {
+    width: min(300px, 28vw);
+    padding: 20px 16px;
+  }
+}
 </style>
