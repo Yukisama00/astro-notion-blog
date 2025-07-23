@@ -147,13 +147,21 @@ const links = [
     overflow: hidden;
     height: 200px;
     background: #f8fafc;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
   .card-image :global(img) {
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    object-fit: contain;
     transition: transform 0.3s ease;
+  }
+
+  .card-image :global(.featured-image) {
+    margin: 0 !important;
+    padding: 0 !important;
   }
 
   .post-card:hover .card-image :global(img) {
