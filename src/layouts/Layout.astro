@@ -156,21 +156,19 @@ if (database.Icon && database.Icon.Type === 'file') {
 
 <style>
   .container {
-  min-height: 100dvh;
-  background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
-  border-radius: 24px;
-  box-shadow: 
-    0 20px 60px rgba(0,0,0,0.12),
-    0 8px 25px rgba(0,0,0,0.08);
-  padding: 0;
-  margin: 24px auto;
-  /* レスポンシブな幅設定 */
-  max-width: min(1400px, calc(100vw - 48px)); /* 画面幅から余白を引いた値と最大幅の小さい方 */
-  width: 100%;
-  border: none;
-  overflow: hidden;
-  position: relative;
-}
+    min-height: 100dvh;
+    background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+    border-radius: 24px;
+    box-shadow: 
+      0 20px 60px rgba(0,0,0,0.12),
+      0 8px 25px rgba(0,0,0,0.08);
+    padding: 0;
+    margin: 24px auto;
+    max-width: 1400px;
+    border: none;
+    overflow: hidden;
+    position: relative;
+  }
 
   /* 微細なグラデーション効果 */
   .container::before {
@@ -302,13 +300,105 @@ if (database.Icon && database.Icon.Type === 'file') {
     flex: 1;
     display: flex;
     flex-direction: column;
-    /* カードレイアウト用の最小幅を確保 */
-    min-width: 0;
   }
   @media (max-width: 768px) {
     div.content {
       padding: 24px 20px;
     }
+  }
+
+  /* 美しいカードスタイルの記事リスト */
+  .post-list {
+    display: grid;
+    gap: 32px;
+    margin: 32px 0;
+  }
+
+  .post-list > article {
+    background: #ffffff;
+    border-radius: 16px;
+    border: 1px solid rgba(148, 163, 184, 0.15);
+    padding: 32px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* カードのホバーエフェクト */
+  .post-list > article::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #3b82f6, #8b5cf6, #06b6d4);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.3s ease;
+  }
+
+  .post-list > article:hover {
+    transform: translateY(-4px);
+    box-shadow: 
+      0 20px 40px rgba(0,0,0,0.1),
+      0 8px 16px rgba(0,0,0,0.06);
+    border-color: rgba(59, 130, 246, 0.3);
+  }
+
+  .post-list > article:hover::before {
+    transform: scaleX(1);
+  }
+
+  /* 記事タイトルのスタイリング */
+  .post-list > article h2 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #1e293b;
+    margin-bottom: 12px;
+    line-height: 1.4;
+  }
+
+  /* 記事の概要・メタ情報 */
+  .post-list > article .post-meta {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 16px;
+    font-size: 0.875rem;
+    color: #64748b;
+  }
+
+  .post-list > article .post-excerpt {
+    color: #475569;
+    line-height: 1.6;
+    margin-bottom: 20px;
+  }
+
+  /* 記事の続きを読むリンク */
+  .post-list > article .read-more {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: #3b82f6;
+    font-weight: 600;
+    font-size: 0.875rem;
+    text-decoration: none;
+    transition: all 0.2s ease;
+  }
+
+  .post-list > article .read-more:hover {
+    color: #2563eb;
+    gap: 12px;
+  }
+
+  .post-list > article .read-more::after {
+    content: '→';
+    transition: transform 0.2s ease;
+  }
+
+  .post-list > article .read-more:hover::after {
+    transform: translateX(2px);
   }
 
   /* ヘッダー部分の改善 */
@@ -754,244 +844,5 @@ body {
     width: 56px;
     height: 56px;
   }
-  /* カードレイアウト用のグローバルスタイル追加 */
-  
-  /* PostFeaturedImage コンポーネント用のグローバルスタイル */
-  :global(.featured-image) {
-    display: block;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: center;
   }
-
-  /* PostTags コンポーネント用のグローバルスタイル */
-  :global(.post-tags) {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    margin: 0;
-  }
-
-  :global(.post-tag) {
-    background: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(10px);
-    color: #3b82f6;
-    font-size: 0.75rem;
-    font-weight: 600;
-    padding: 6px 12px;
-    border-radius: 20px;
-    border: 1px solid rgba(59, 130, 246, 0.2);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    text-decoration: none;
-    transition: all 0.2s ease;
-  }
-
-  :global(.post-tag:hover) {
-    background: #3b82f6;
-    color: white;
-    transform: translateY(-1px);
-  }
-
-  /* PostTitle コンポーネント用のグローバルスタイル */
-  :global(.post-title) {
-    margin: 0;
-    font-size: 1.375rem;
-    font-weight: 700;
-    color: #1e293b;
-    line-height: 1.4;
-  }
-
-  :global(.post-title a) {
-    text-decoration: none;
-    color: inherit;
-    transition: color 0.2s ease;
-  }
-
-  :global(.post-title a:hover) {
-    color: #3b82f6;
-  }
-
-  /* PostDate, PostUpdateDate コンポーネント用のグローバルスタイル */
-  :global(.post-date),
-  :global(.post-update-date) {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    background: #f8fafc;
-    padding: 4px 10px;
-    border-radius: 12px;
-    border: 1px solid #e2e8f0;
-    font-size: 0.875rem;
-    color: #64748b;
-    text-decoration: none;
-  }
-
-  /* PostExcerpt コンポーネント用のグローバルスタイル */
-  :global(.post-excerpt) {
-    color: #475569;
-    line-height: 1.6;
-    margin: 0;
-    font-size: 0.9375rem;
-  }
-
-  :global(.post-excerpt p) {
-    margin: 0;
-    display: -webkit-box;
-    -webkit-line-clamp: 3;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-  }
-
-  /* ReadMoreLink コンポーネント用のグローバルスタイル */
-  :global(.read-more-link) {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    color: #3b82f6;
-    font-weight: 600;
-    font-size: 0.875rem;
-    text-decoration: none;
-    padding: 8px 16px;
-    border-radius: 12px;
-    background: rgba(59, 130, 246, 0.05);
-    border: 1px solid rgba(59, 130, 246, 0.1);
-    transition: all 0.3s ease;
-    position: relative;
-    overflow: hidden;
-  }
-
-  :global(.read-more-link::before) {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
-    transition: left 0.5s ease;
-  }
-
-  :global(.read-more-link:hover) {
-    background: #3b82f6;
-    color: white;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
-    gap: 12px;
-  }
-
-  :global(.read-more-link:hover::before) {
-    left: 100%;
-  }
-
-  :global(.read-more-link::after) {
-    content: '→';
-    transition: transform 0.3s ease;
-    font-weight: bold;
-  }
-
-  :global(.read-more-link:hover::after) {
-    transform: translateX(4px);
-  }
-
-  /* レスポンシブ対応の追加 */
-  @media (max-width: 1200px) {
-    .container {
-      max-width: 95%;
-    }
-  }
-
-  @media (max-width: 900px) {
-    .container > div {
-      gap: 0;
-    }
-    
-    aside {
-      width: 280px;
-    }
-  }
-
-  @media (max-width: 768px) {
-    :global(.post-title) {
-      font-size: 1.25rem;
-    }
-    
-    :global(.post-tag) {
-      font-size: 0.7rem;
-      padding: 4px 8px;
-    }
-  }
-  /* 大きなデスクトップ画面での調整 */
-@media (min-width: 1600px) {
-  .container {
-    max-width: min(1200px, calc(100vw - 200px)); /* 大画面では相対的に小さく */
-  }
-}
-
-/* 中程度のデスクトップ画面での調整 */
-@media (min-width: 1200px) and (max-width: 1599px) {
-  .container {
-    max-width: calc(100vw - 100px); /* 画面幅から適度な余白 */
-  }
-}
-
-/* 小さなデスクトップ・大きなタブレット */
-@media (min-width: 1024px) and (max-width: 1199px) {
-  .container {
-    max-width: calc(100vw - 80px);
-    margin: 20px auto;
-  }
-}
-
-/* タブレット */
-@media (min-width: 768px) and (max-width: 1023px) {
-  .container {
-    max-width: calc(100vw - 40px);
-    margin: 16px auto;
-    border-radius: 20px;
-  }
-  
-  aside {
-    width: 280px; /* サイドバーを少し狭く */
-  }
-}
-
-/* スマートフォン（既存のまま維持）*/
-@media (max-width: 767px) {
-  .container > div {
-    display: block;
-    gap: 0;
-  }
-  .container {
-    margin: 12px;
-    border-radius: 16px;
-  }
-}
-
-/* コンテンツエリアの調整 */
-@media (min-width: 1400px) {
-  div.content {
-    padding: 40px min(48px, 4vw); /* 画面幅に応じてパディングを調整 */
-  }
-}
-
-@media (min-width: 1024px) and (max-width: 1399px) {
-  div.content {
-    padding: 36px min(40px, 3.5vw);
-  }
-}
-
-/* サイドバーの幅調整 */
-@media (min-width: 1200px) {
-  aside {
-    width: min(320px, 25vw); /* 画面幅の25%か320pxの小さい方 */
-  }
-}
-
-@media (min-width: 1024px) and (max-width: 1199px) {
-  aside {
-    width: min(300px, 28vw);
-    padding: 20px 16px;
-  }
-}
 </style>
