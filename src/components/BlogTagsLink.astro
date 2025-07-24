@@ -12,7 +12,8 @@ export interface Props {
 const { heading, tags } = Astro.props
 ---
 
-<div class="blog-tags-link">
+
+<div class="blog-tags-link section">
   <h3>{heading}</h3>
   {
     tags.length === 0 ? (
@@ -22,7 +23,8 @@ const { heading, tags } = Astro.props
         {tags.map((tag: SelectProperty) => (
           <li>
             <a href={getTagLink(tag.name)} class={`tag ${tag.color}`}>
-              {tag.name}
+              <span class="tag-icon">#</span>
+              <span class="tag-name">{tag.name}</span>
             </a>
           </li>
         ))}
