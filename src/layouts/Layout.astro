@@ -146,6 +146,13 @@ if (database.Icon && database.Icon.Type === 'file') {
           <div class="categories">
             <slot name="aside" />
           </div>
+          <div class="site-summary-card"> 
+            <h3>About</h3>
+            当ブログは情報の共有を目的としており、<br>
+            内容や飼育の方法が正確であること、<br>
+            または成果を保証するものではございません。<br>
+            生体の販売等は行っておりません。
+          </div>
         </aside>
       </div>
     </div>
@@ -227,8 +234,6 @@ if (database.Icon && database.Icon.Type === 'file') {
     border-left: 1px solid rgba(148, 163, 184, 0.2);
     box-sizing: border-box;
     position: relative;
-    overflow-y: auto;
-    max-height: calc(100dvh - 48px);
   }
   
   /* サイドバーに微細な影 */
