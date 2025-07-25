@@ -552,8 +552,8 @@ if (database.Icon && database.Icon.Type === 'file') {
   /* サイドバーのコンテンツスタイリング */
   aside h3 {
     color: #1e293b;
-    font-size: 1.125rem;
-    font-weight: 600;
+    font-size: 1.25rem; /* 最新記事と同じサイズに */
+    font-weight: 600;   /* 最新記事と同じ太さに */
     margin-bottom: 16px;
     padding-bottom: 8px;
     border-bottom: 2px solid #e2e8f0;
@@ -895,5 +895,37 @@ body {
     position: relative;
     z-index: 1;
   }
+      /* Site Notice Card */
+    .site-notice-card {
+        background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+        border-radius: 16px;
+        border: 1px solid rgba(245, 158, 11, 0.2);
+        padding: 24px;
+        position: relative;
+        overflow: hidden;
+        box-shadow: 0 4px 15px rgba(245, 158, 11, 0.1);
+    }
+    
+    .site-notice-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 3px;
+        background: linear-gradient(90deg, #f59e0b, #d97706);
+    }
+    
+    .notice-content {
+        text-align: center;
+    }
+    
+    .notice-content p {
+        font-size: 0.875rem;
+        color: #92400e;
+        line-height: 1.6;
+        margin: 0;
+        font-weight: 500;
+    }
   }
 </style>
