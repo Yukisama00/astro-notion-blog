@@ -97,8 +97,7 @@
   .search-result li {
     margin: 0 !important;
     padding: 0 !important;
-    border-bottom: 3px solid red !important; /* デバッグ用：目立つ赤い線 */
-    background-color: #fffaaa !important; /* デバッグ用：黄色い背景 */
+    border-bottom: 1px solid #f0f0f0 !important;
   }
   
   .search-result li:last-child {
@@ -177,39 +176,55 @@
     font-weight: 600;
     font-style: normal;
   }
+
+  /* 検索結果のハイライト表示 */
+  .search-highlight {
+    background-color: #ffeb3b;
+    font-weight: bold;
+    padding: 1px 3px;
+    border-radius: 3px;
+    color: #333;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  }
+
+  .search-result li.selected .search-highlight {
+    background-color: #ffd700;
+    color: #000;
+  }
+
+  .loading-indicator {
+    padding: 24px 16px;
+    text-align: center;
+    color: #666;
+    font-style: italic;
+  }
 </style>
 
 <script>
   document.addEventListener('DOMContentLoaded', async () => {
-    // デバッグ：CSSが読み込まれているかテスト
     console.log('SearchModal script loaded');
-    
-    // JavaScriptで直接スタイルを適用してテスト
-    setTimeout(() => {
-      const searchResults = document.querySelectorAll('.search-result li');
-      searchResults.forEach(li => {
-        li.style.border = '3px solid red';
-        li.style.backgroundColor = '#fffaaa';
-        console.log('Debug style applied to:', li);
-      });
-    }, 1000);
 
     let feedItems = []
     let fetched = false
     let isModalOpen = false
+    let isLoading = false
 
     async function openModal() {
       isModalOpen = true
       document.querySelector('.search-modal-container').style.display = 'block'
       document.querySelector('.search-prompt input').focus()
 
-      if (!fetched) {
+      if (!fetched && !isLoading) {
+        isLoading = true
+        renderLoading()
         try {
           await fetchRSS()
         } catch (error) {
           console.error('Failed to fetch RSS:', error)
           renderError()
           return
+        } finally {
+          isLoading = false
         }
       }
       searchAndRender()
@@ -326,7 +341,7 @@
 
       if (text !== '') {
         const results = search(text)
-        renderResults(results)
+        renderResults(results, text)
       } else {
         renderResults(feedItems)
       }
@@ -334,22 +349,117 @@
       selectFirst()
     }
 
+    // HTMLタグを削除するヘルパー関数
+    function stripHtml(html) {
+      const temp = document.createElement('div')
+      temp.innerHTML = html
+      return temp.textContent || temp.innerText || ''
+    }
+
+    // 検索語をハイライトするヘルパー関数
+    function highlightSearchTerm(text, searchTerm) {
+      if (!searchTerm || !text) return text
+      
+      // 複数の単語での検索に対応
+      const terms = searchTerm.split(/\s+/).filter(function(term) {
+        return term.length > 0
+      })
+      
+      let highlightedText = text
+      
+      terms.forEach(function(term) {
+        // 特殊文字をエスケープ
+        const escapedTerm = term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+        const regex = new RegExp('(' + escapedTerm + ')', 'gi')
+        highlightedText = highlightedText.replace(regex, '<span class="search-highlight">$1</span>')
+      })
+      
+      return highlightedText
+    }
+
+    // テキストを安全に切り取る関数
+    function truncateText(text, maxLength) {
+      if (!maxLength) maxLength = 120
+      if (text.length <= maxLength) return text
+      
+      // 単語の境界で切り取り
+      const truncated = text.substring(0, maxLength)
+      const lastSpace = truncated.lastIndexOf(' ')
+      
+      if (lastSpace > maxLength * 0.8) {
+        return truncated.substring(0, lastSpace) + '...'
+      }
+      
+      return truncated + '...'
+    }
+
+    // 改良された検索関数
     function search(query) {
       const results = []
       const lowerQuery = query.toLowerCase()
 
-      feedItems.forEach((item) => {
+      feedItems.forEach(function(item) {
+        let score = 0
+        let matchedContent = ''
+
+        // タイトルでの検索（高いスコア）
         const titleMatch = item.title.toLowerCase().includes(lowerQuery)
-        const descriptionMatch = item?.description?.toLowerCase().includes(lowerQuery)
-        
-        if (titleMatch || descriptionMatch) {
-          results.push(item)
+        if (titleMatch) {
+          score += 10
+          matchedContent = item.title
+        }
+
+        // 説明文での検索（中程度のスコア）
+        const descriptionMatch = item.description && item.description.toLowerCase().includes(lowerQuery)
+        if (descriptionMatch) {
+          score += 5
+          if (!matchedContent) matchedContent = item.description
+        }
+
+        // 本文での検索（低いスコア、ただし重要）
+        const contentMatch = item.content && item.content.toLowerCase().includes(lowerQuery)
+        if (contentMatch) {
+          score += 3
+          if (!matchedContent) {
+            // 検索語周辺のテキストを抽出してハイライト用に準備
+            const contentText = stripHtml(item.content)
+            const lowerContent = contentText.toLowerCase()
+            const index = lowerContent.indexOf(lowerQuery)
+            
+            if (index !== -1) {
+              const start = Math.max(0, index - 60)
+              const end = Math.min(contentText.length, index + lowerQuery.length + 60)
+              let excerpt = contentText.substring(start, end)
+              
+              // 前後に省略記号を追加
+              if (start > 0) excerpt = '...' + excerpt
+              if (end < contentText.length) excerpt = excerpt + '...'
+              
+              matchedContent = excerpt
+            }
+          }
+        }
+
+        if (score > 0) {
+          results.push({
+            title: item.title,
+            link: item.link,
+            description: item.description,
+            content: item.content,
+            pubDate: item.pubDate,
+            score: score,
+            matchedContent: matchedContent || item.description
+          })
         }
       })
-      return results
+
+      // スコア順にソート
+      return results.sort(function(a, b) {
+        return b.score - a.score
+      })
     }
 
-    function renderResults(results) {
+    function renderResults(results, searchTerm) {
       const ul = document.querySelector('.search-result ul')
       ul.innerHTML = ''
 
@@ -363,16 +473,23 @@
         return
       }
 
-      results.forEach((item) => {
+      results.forEach(function(item) {
         const li = document.createElement('li')
         const a = document.createElement('a')
         const title = document.createElement('div')
         const description = document.createElement('div')
 
         title.className = 'search-result-title'
-        title.textContent = item.title || 'タイトルなし'
+        const titleText = item.title || 'タイトルなし'
+        title.innerHTML = highlightSearchTerm(titleText, searchTerm || '')
+
         description.className = 'search-result-description'
-        description.textContent = item.description || ''
+        let descText = item.matchedContent || item.description || ''
+        
+        // 説明文が長すぎる場合は切り取り
+        descText = truncateText(descText, 150)
+        description.innerHTML = highlightSearchTerm(descText, searchTerm || '')
+        
         a.href = item.link || '#'
 
         li.addEventListener('mouseover', handleMouseover)
@@ -396,16 +513,62 @@
       ul.appendChild(li)
     }
 
+    function renderLoading() {
+      const ul = document.querySelector('.search-result ul')
+      ul.innerHTML = ''
+      
+      const li = document.createElement('li')
+      const div = document.createElement('div')
+      div.className = 'loading-indicator'
+      div.textContent = '記事を読み込み中...'
+      li.appendChild(div)
+      ul.appendChild(li)
+    }
+
+    // 個別記事の本文を取得する関数
+    async function fetchArticleContent(url) {
+      try {
+        const response = await fetch(url)
+        if (!response.ok) return ''
+        
+        const html = await response.text()
+        const parser = new DOMParser()
+        const doc = parser.parseFromString(html, 'text/html')
+        
+        // 記事本文を取得（一般的なセレクタを使用）
+        const contentSelectors = [
+          'article',
+          '.content',
+          '.post-content',
+          '.entry-content',
+          'main',
+          '#content'
+        ]
+        
+        for (const selector of contentSelectors) {
+          const element = doc.querySelector(selector)
+          if (element) {
+            return element.textContent || element.innerText || ''
+          }
+        }
+        
+        return ''
+      } catch (error) {
+        console.warn('Failed to fetch content for ' + url + ':', error)
+        return ''
+      }
+    }
+
     async function fetchRSS() {
       const url = new URL(location.href)
-      const port = url.port ? `:${url.port}` : ''
+      const port = url.port ? ':' + url.port : ''
 
       const res = await fetch(
-        `${url.protocol}//${url.hostname}${port}/feed`
+        url.protocol + '//' + url.hostname + port + '/feed'
       )
       
       if (res.status !== 200) {
-        throw new Error(`HTTP ${res.status}: Failed to fetch RSS feed`)
+        throw new Error('HTTP ' + res.status + ': Failed to fetch RSS feed')
       }
 
       const body = await res.text()
@@ -423,31 +586,66 @@
         console.warn('No items found in RSS feed')
       }
 
-      Array.from(items).forEach((item) => {
+      // 基本情報を先に収集
+      const itemsData = Array.from(items).map(function(item) {
         const titleEl = item.getElementsByTagName('title')[0]
         const linkEl = item.getElementsByTagName('link')[0]
         const descriptionEl = item.getElementsByTagName('description')[0]
         const pubDateEl = item.getElementsByTagName('pubDate')[0]
+        const contentEl = item.getElementsByTagName('content:encoded')[0] || 
+                         item.getElementsByTagName('content')[0]
 
-        const title = titleEl?.textContent || 'タイトルなし'
-        const link = linkEl?.textContent || '#'
-        const description = descriptionEl?.textContent || ''
-        const pubDate = pubDateEl?.textContent || ''
+        const title = titleEl ? titleEl.textContent : 'タイトルなし'
+        const link = linkEl ? linkEl.textContent : '#'
+        const description = stripHtml(descriptionEl ? descriptionEl.textContent : '')
+        const pubDate = pubDateEl ? pubDateEl.textContent : ''
+        const content = contentEl ? contentEl.textContent : ''
 
-        feedItems.push({
-          title,
-          link,
-          description,
-          pubDate,
-        })
+        return {
+          title: title,
+          link: link,
+          description: description,
+          pubDate: pubDate,
+          content: stripHtml(content)
+        }
       })
+
+      feedItems = itemsData
+
+      // バックグラウンドで各記事の本文を取得（オプション）
+      const contentPromises = itemsData.slice(0, 10).map(async function(item, index) {
+        if (!item.content && item.link !== '#') {
+          try {
+            const articleContent = await fetchArticleContent(item.link)
+            if (articleContent) {
+              feedItems[index].content = articleContent
+            }
+          } catch (error) {
+            console.warn('Failed to fetch content for article: ' + item.title, error)
+          }
+        }
+      })
+
+      // 一部の記事本文の取得を並列実行（タイムアウト付き）
+      try {
+        await Promise.race([
+          Promise.all(contentPromises),
+          new Promise(function(_, reject) {
+            setTimeout(function() {
+              reject(new Error('Timeout'))
+            }, 5000)
+          })
+        ])
+      } catch (error) {
+        console.warn('Some article contents could not be fetched:', error)
+      }
 
       fetched = true
     }
 
     // イベントリスナーの設定
     Array.from(document.getElementsByClassName('open-search-modal')).forEach(
-      (element) => {
+      function(element) {
         element.addEventListener('click', openModal)
       }
     )
