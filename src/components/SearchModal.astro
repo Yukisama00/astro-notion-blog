@@ -414,7 +414,31 @@
       return truncated + '...';
     }
 
-    // 改良された検索関数（本文検索を強化）
+    // テキスト正規化関数（日本語対応）
+    function normalizeTextForSearch(text) {
+      if (!text) return '';
+      
+      return text
+        // ひらがな・カタカナの正規化
+        .replace(/[\u3041-\u3096]/g, function(match) {
+          return String.fromCharCode(match.charCodeAt(0) + 0x60);
+        })
+        // 全角英数字を半角に変換
+        .replace(/[Ａ-Ｚａ-ｚ０-９]/g, function(match) {
+          return String.fromCharCode(match.charCodeAt(0) - 0xFEE0);
+        })
+        // 複数の空白を1つにまとめる
+        .replace(/\s+/g, ' ')
+        .trim()
+        .toLowerCase();
+    }
+
+    // 正規表現用文字エスケープ関数
+    function escapeRegExp(string) {
+      return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    }
+
+    // 改良された検索関数（表示用テキストを保持）
     function search(query) {
       var results = [];
       var lowerQuery = query.toLowerCase();
@@ -428,11 +452,13 @@
         var item = feedItems[i];
         var score = 0;
         var matchedContent = '';
+        var bestHeadingMatch = null;
         var matchDetails = {
           titleMatch: false,
           descriptionMatch: false,
           contentMatch: false,
-          fullBodyMatch: false
+          fullBodyMatch: false,
+          headingMatch: false
         };
 
         // タイトルでの検索（最高スコア）
@@ -441,8 +467,34 @@
           var titleScore = calculateMatchScore(titleLower, queryTerms, lowerQuery);
           if (titleScore > 0) {
             score += titleScore * 15; // タイトルマッチの重み増加
-            matchedContent = item.title;
+            matchedContent = item.title; // 元のタイトルを保持
             matchDetails.titleMatch = true;
+          }
+        }
+
+        // 見出しでの検索（新機能）
+        if (item.headings && item.headings.length > 0) {
+          var bestHeadingScore = 0;
+          for (var h = 0; h < item.headings.length; h++) {
+            var heading = item.headings[h];
+            var headingLower = heading.text.toLowerCase();
+            var headingScore = calculateMatchScore(headingLower, queryTerms, lowerQuery);
+            
+            if (headingScore > bestHeadingScore) {
+              bestHeadingScore = headingScore;
+              bestHeadingMatch = heading;
+            }
+          }
+          
+          if (bestHeadingScore > 0) {
+            // 見出しレベルに応じてスコア調整（h1が最高、h6が最低）
+            var headingWeight = (7 - bestHeadingMatch.level) * 2; // h1=12, h2=10, h3=8, etc.
+            score += bestHeadingScore * headingWeight;
+            
+            if (!matchedContent) {
+              matchedContent = bestHeadingMatch.text; // 元の見出しテキストを保持
+            }
+            matchDetails.headingMatch = true;
           }
         }
 
@@ -453,7 +505,7 @@
           if (descScore > 0) {
             score += descScore * 8;
             if (!matchedContent) {
-              matchedContent = item.description;
+              matchedContent = item.description; // 元の説明文を保持
             }
             matchDetails.descriptionMatch = true;
           }
@@ -466,20 +518,20 @@
           if (contentScore > 0) {
             score += contentScore * 5;
             if (!matchedContent) {
-              matchedContent = extractRelevantContent(item.content, lowerQuery, queryTerms);
+              matchedContent = extractRelevantContent(item.content, lowerQuery, queryTerms); // 元のテキストを保持
             }
             matchDetails.contentMatch = true;
           }
         }
 
-        // フル記事本文での検索（新機能）
+        // フル記事本文での検索
         if (item.fullBody) {
           var bodyLower = item.fullBody.toLowerCase();
           var bodyScore = calculateMatchScore(bodyLower, queryTerms, lowerQuery);
           if (bodyScore > 0) {
             score += bodyScore * 3; // 本文マッチのスコア
             if (!matchedContent) {
-              matchedContent = extractRelevantContent(item.fullBody, lowerQuery, queryTerms);
+              matchedContent = extractRelevantContent(item.fullBody, lowerQuery, queryTerms); // 元のテキストを保持
             }
             matchDetails.fullBodyMatch = true;
           }
@@ -492,10 +544,12 @@
             description: item.description,
             content: item.content,
             fullBody: item.fullBody,
+            headings: item.headings,
             pubDate: item.pubDate,
             score: score,
-            matchedContent: matchedContent || item.description,
-            matchDetails: matchDetails
+            matchedContent: matchedContent || item.description, // 元のテキストを保持
+            matchDetails: matchDetails,
+            bestHeadingMatch: bestHeadingMatch
           });
         }
       }
@@ -506,66 +560,172 @@
       });
     }
 
-    // マッチスコア計算関数
+    // マッチスコア計算関数（大幅強化）
     function calculateMatchScore(text, queryTerms, fullQuery) {
       if (!text) return 0;
       
+      // テキストを正規化
+      var normalizedText = normalizeTextForSearch(text.toLowerCase());
+      var normalizedQuery = normalizeTextForSearch(fullQuery.toLowerCase());
+      var normalizedTerms = queryTerms.map(function(term) {
+        return normalizeTextForSearch(term.toLowerCase());
+      });
+      
       var score = 0;
       
-      // 完全フレーズマッチ（最高点）
-      if (text.indexOf(fullQuery) !== -1) {
-        score += 10;
+      // 1. 完全フレーズマッチ（最優先）
+      if (normalizedText.indexOf(normalizedQuery) !== -1) {
+        score += 20; // スコアを大幅増加
       }
       
-      // 個別単語マッチ
-      var matchedTerms = 0;
-      for (var i = 0; i < queryTerms.length; i++) {
-        if (text.indexOf(queryTerms[i]) !== -1) {
-          matchedTerms++;
-          score += 2;
-        }
-      }
-      
-      // すべての検索語がマッチした場合のボーナス
-      if (matchedTerms === queryTerms.length && queryTerms.length > 1) {
-        score += 5;
-      }
-      
-      return score;
-    }
-
-    // 関連するコンテンツを抽出する関数
-    function extractRelevantContent(text, query, queryTerms) {
-      if (!text) return '';
-      
-      var bestMatch = '';
-      var bestScore = 0;
-      
-      // 各検索語の周辺テキストを抽出
-      for (var i = 0; i < queryTerms.length; i++) {
-        var term = queryTerms[i];
-        var index = text.toLowerCase().indexOf(term);
-        
-        if (index !== -1) {
-          var start = Math.max(0, index - 80);
-          var end = Math.min(text.length, index + term.length + 80);
-          var excerpt = text.substring(start, end);
-          
-          // この抜粋のマッチスコアを計算
-          var score = calculateMatchScore(excerpt.toLowerCase(), queryTerms, query);
-          
-          if (score > bestScore) {
-            bestScore = score;
-            bestMatch = excerpt;
+      // 2. 部分文字列マッチ（ひらがな・カタカナ・漢字対応）
+      var partialMatches = 0;
+      for (var i = 0; i < normalizedTerms.length; i++) {
+        var term = normalizedTerms[i];
+        if (term.length > 0) {
+          // 完全一致
+          if (normalizedText.indexOf(term) !== -1) {
+            partialMatches++;
+            score += 5;
             
-            // 前後に省略記号を追加
-            if (start > 0) bestMatch = '...' + bestMatch;
-            if (end < text.length) bestMatch = bestMatch + '...';
+            // 単語境界での一致にボーナス
+            var wordBoundaryRegex = new RegExp('(^|\\s)' + escapeRegExp(term) + '(\\s|$)', 'i');
+            if (wordBoundaryRegex.test(normalizedText)) {
+              score += 3;
+            }
+          }
+          
+          // 部分一致（3文字以上の場合）
+          if (term.length >= 3) {
+            for (var j = 0; j < term.length - 2; j++) {
+              var substring = term.substring(j, j + 3);
+              if (normalizedText.indexOf(substring) !== -1) {
+                score += 1;
+              }
+            }
           }
         }
       }
       
-      return bestMatch || text.substring(0, 200);
+      // 3. すべての検索語がマッチした場合の大幅ボーナス
+      if (partialMatches === normalizedTerms.length && normalizedTerms.length > 1) {
+        score += 15;
+      }
+      
+      // 4. 文字の近接性ボーナス
+      if (normalizedTerms.length > 1) {
+        var proximityBonus = calculateProximityBonus(normalizedText, normalizedTerms);
+        score += proximityBonus;
+      }
+      
+      return score;
+    }
+    
+    // 検索語の近接性を計算する関数
+    function calculateProximityBonus(text, terms) {
+      var positions = [];
+      
+      // 各検索語の位置を記録
+      for (var i = 0; i < terms.length; i++) {
+        var term = terms[i];
+        var index = text.indexOf(term);
+        if (index !== -1) {
+          positions.push(index);
+        }
+      }
+      
+      if (positions.length < 2) return 0;
+      
+      // 位置をソート
+      positions.sort(function(a, b) { return a - b; });
+      
+      var bonus = 0;
+      for (var j = 0; j < positions.length - 1; j++) {
+        var distance = positions[j + 1] - positions[j];
+        // 距離が近いほど高いボーナス（最大5点）
+        if (distance < 50) {
+          bonus += Math.max(0, 5 - Math.floor(distance / 10));
+        }
+      }
+      
+      return bonus;
+    }
+
+    // 関連するコンテンツを抽出する関数（表示用テキストを保持）
+    function extractRelevantContent(rawText, query, queryTerms) {
+      if (!rawText) return '';
+      
+      // 検索用に正規化されたテキスト（内部処理用）
+      var normalizedText = normalizeTextForSearch(rawText);
+      var normalizedQuery = normalizeTextForSearch(query.toLowerCase());
+      var normalizedTerms = queryTerms.map(function(term) {
+        return normalizeTextForSearch(term.toLowerCase());
+      });
+      
+      // 表示用の元のテキスト（正規化しない）
+      var originalText = rawText;
+      
+      var bestExcerpts = [];
+      
+      // 各検索語に対して関連部分を抽出
+      for (var i = 0; i < normalizedTerms.length; i++) {
+        var term = normalizedTerms[i];
+        if (term.length === 0) continue;
+        
+        var searchText = normalizedText.toLowerCase();
+        var index = searchText.indexOf(term);
+        
+        while (index !== -1) {
+          // より広い範囲でコンテキストを抽出（元のテキストから）
+          var contextStart = Math.max(0, index - 120);
+          var contextEnd = Math.min(originalText.length, index + term.length + 120);
+          var excerpt = originalText.substring(contextStart, contextEnd);
+          
+          // この抜粋のマッチスコアを計算（正規化されたテキストで）
+          var normalizedExcerpt = normalizeTextForSearch(excerpt);
+          var excerptScore = calculateMatchScore(normalizedExcerpt, normalizedTerms, normalizedQuery);
+          
+          bestExcerpts.push({
+            text: excerpt, // 元のテキストを保持
+            score: excerptScore,
+            position: index,
+            contextStart: contextStart,
+            contextEnd: contextEnd
+          });
+          
+          // 次の出現を検索
+          index = searchText.indexOf(term, index + 1);
+          
+          // 無限ループ防止（最大10個まで）
+          if (bestExcerpts.length >= 10) break;
+        }
+        
+        if (bestExcerpts.length >= 10) break;
+      }
+      
+      if (bestExcerpts.length === 0) {
+        // フォールバック: テキストの最初の部分を返す（元のテキスト）
+        return originalText.substring(0, 200) + (originalText.length > 200 ? '...' : '');
+      }
+      
+      // スコア順にソート
+      bestExcerpts.sort(function(a, b) {
+        return b.score - a.score;
+      });
+      
+      // 最高スコアの抜粋を選択
+      var bestExcerpt = bestExcerpts[0];
+      var result = bestExcerpt.text; // 元のテキストを使用
+      
+      // 前後に省略記号を追加
+      if (bestExcerpt.contextStart > 0) {
+        result = '...' + result;
+      }
+      if (bestExcerpt.contextEnd < originalText.length) {
+        result = result + '...';
+      }
+      
+      return result;
     }
 
     function renderResults(results, searchTerm) {
@@ -603,6 +763,22 @@
         descText = truncateText(descText, 150);
         description.innerHTML = highlightSearchTerm(descText, searchTerm || '');
         
+        // リンクURLを決定（見出しマッチがある場合はアンカーリンクを使用）
+        var linkUrl = item.link || '#';
+        if (item.bestHeadingMatch && item.bestHeadingMatch.anchorId) {
+          linkUrl += '#' + item.bestHeadingMatch.anchorId;
+          
+          // 見出しマッチの場合、追加情報を表示
+          var headingIndicator = document.createElement('span');
+          headingIndicator.className = 'heading-match-indicator';
+          headingIndicator.style.fontSize = '12px';
+          headingIndicator.style.color = '#0066cc';
+          headingIndicator.style.fontWeight = 'bold';
+          headingIndicator.style.marginLeft = '8px';
+          headingIndicator.textContent = '→ ' + item.bestHeadingMatch.text;
+          title.appendChild(headingIndicator);
+        }
+        
         // マッチ情報を表示（デバッグ用・オプション）
         if (searchTerm && item.matchDetails) {
           matchInfo.className = 'search-match-info';
@@ -612,6 +788,7 @@
           
           var matchTypes = [];
           if (item.matchDetails.titleMatch) matchTypes.push('タイトル');
+          if (item.matchDetails.headingMatch) matchTypes.push('見出し');
           if (item.matchDetails.descriptionMatch) matchTypes.push('概要');
           if (item.matchDetails.contentMatch) matchTypes.push('RSS');
           if (item.matchDetails.fullBodyMatch) matchTypes.push('本文');
@@ -621,7 +798,7 @@
           }
         }
         
-        a.href = item.link || '#';
+        a.href = linkUrl;
 
         li.addEventListener('mouseover', handleMouseover);
 
@@ -666,7 +843,7 @@
     // 個別記事の本文を取得する関数（強化版）
     function fetchArticleContent(url) {
       return fetch(url).then(function(response) {
-        if (!response.ok) return '';
+        if (!response.ok) return { content: '', headings: [], rawHtml: '' };
         return response.text();
       }).then(function(html) {
         var parser = new DOMParser();
@@ -702,6 +879,7 @@
         ];
         
         var fullContent = '';
+        var headings = [];
         
         for (var i = 0; i < contentSelectors.length; i++) {
           var element = doc.querySelector(contentSelectors[i]);
@@ -716,14 +894,37 @@
             if (text.length > fullContent.length) {
               fullContent = text;
             }
+            
+            // 見出しを抽出
+            if (headings.length === 0) {
+              var headingElements = element.querySelectorAll('h1, h2, h3, h4, h5, h6');
+              for (var k = 0; k < headingElements.length; k++) {
+                var heading = headingElements[k];
+                var level = parseInt(heading.tagName.substring(1));
+                var text = heading.textContent || heading.innerText || '';
+                var anchorId = heading.id || '';
+                
+                if (text.trim()) {
+                  headings.push({
+                    level: level,
+                    text: text.trim(),
+                    anchorId: anchorId
+                  });
+                }
+              }
+            }
           }
         }
         
         // テキストをクリーンアップ
-        return cleanupText(fullContent);
+        return {
+          content: cleanupText(fullContent),
+          headings: headings,
+          rawHtml: html
+        };
       }).catch(function(error) {
         console.warn('Failed to fetch content for ' + url + ':', error);
-        return '';
+        return { content: '', headings: [], rawHtml: '' };
       });
     }
 
@@ -793,6 +994,8 @@
               pubDate: pubDate,
               content: stripHtml(content),
               fullBody: '', // 後で取得する完全な記事本文
+              headings: [], // 後で取得する見出し一覧
+              rawHtml: '', // 生のHTML（デバッグ用）
               contentFetched: false // 本文取得完了フラグ
             });
           }
@@ -825,12 +1028,26 @@
           var item = items[i];
           if (item.link !== '#' && !item.contentFetched) {
             batchPromises.push(
-              fetchArticleContent(item.link).then(function(content) {
-                return { index: i, content: content };
-              }).catch(function(error) {
-                console.warn('Failed to fetch content for item ' + i, error);
-                return { index: i, content: '' };
-              })
+              fetchArticleContent(item.link).then(function(itemIndex) {
+                return function(result) {
+                  return { 
+                    index: itemIndex, 
+                    content: result.content, 
+                    headings: result.headings,
+                    rawHtml: result.rawHtml
+                  };
+                };
+              }(i)).catch(function(itemIndex) {
+                return function(error) {
+                  console.warn('Failed to fetch content for item ' + itemIndex, error);
+                  return { 
+                    index: itemIndex, 
+                    content: '', 
+                    headings: [],
+                    rawHtml: ''
+                  };
+                };
+              }(i))
             );
           }
         }
@@ -841,8 +1058,14 @@
             var result = results[j];
             if (feedItems[result.index]) {
               feedItems[result.index].fullBody = result.content;
+              feedItems[result.index].headings = result.headings || [];
+              feedItems[result.index].rawHtml = result.rawHtml || '';
               feedItems[result.index].contentFetched = true;
               processed++;
+              
+              // デバッグ情報
+              console.log('Content fetched for item ' + result.index + ': ' + 
+                         (result.content ? result.content.length + ' chars' : 'empty'));
             }
           }
           
