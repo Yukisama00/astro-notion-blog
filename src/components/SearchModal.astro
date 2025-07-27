@@ -613,71 +613,74 @@
     }
 
     // 記事本文取得関数
-    function fetchArticleContent(url) {
-      return fetch(url).then(function(response) {
-        if (!response.ok) return { content: '', headings: [] };
-        return response.text();
-      }).then(function(html) {
-        var parser = new DOMParser();
-        var doc = parser.parseFromString(html, 'text/html');
+    function fetchArticleContentWithProxy(url) {
+  // 同一オリジンのプロキシエンドポイントを使用
+  const proxyUrl = `/api/proxy?url=${encodeURIComponent(url)}`;
+  
+  return fetch(proxyUrl).then(function(response) {
+    if (!response.ok) return { content: '', headings: [] };
+    return response.text();
+  }).then(function(html) {
+    var parser = new DOMParser();
+    var doc = parser.parseFromString(html, 'text/html');
+    
+    var contentSelectors = [
+      'article .content',
+      'article .post-content', 
+      'article .entry-content',
+      '.post-content',
+      '.entry-content',
+      '.content',
+      'main article',
+      'article',
+      'main'
+    ];
+    
+    var fullContent = '';
+    var headings = [];
+    
+    for (var i = 0; i < contentSelectors.length; i++) {
+      var element = doc.querySelector(contentSelectors[i]);
+      if (element) {
+        var scripts = element.querySelectorAll('script, style, nav, header, footer, aside');
+        for (var j = 0; j < scripts.length; j++) {
+          scripts[j].remove();
+        }
         
-        var contentSelectors = [
-          'article .content',
-          'article .post-content', 
-          'article .entry-content',
-          '.post-content',
-          '.entry-content',
-          '.content',
-          'main article',
-          'article',
-          'main'
-        ];
+        var text = element.textContent || element.innerText || '';
+        if (text.length > fullContent.length) {
+          fullContent = text;
+        }
         
-        var fullContent = '';
-        var headings = [];
-        
-        for (var i = 0; i < contentSelectors.length; i++) {
-          var element = doc.querySelector(contentSelectors[i]);
-          if (element) {
-            var scripts = element.querySelectorAll('script, style, nav, header, footer, aside');
-            for (var j = 0; j < scripts.length; j++) {
-              scripts[j].remove();
-            }
+        if (headings.length === 0) {
+          var headingElements = element.querySelectorAll('h1, h2, h3, h4, h5, h6');
+          for (var k = 0; k < headingElements.length; k++) {
+            var heading = headingElements[k];
+            var level = parseInt(heading.tagName.substring(1));
+            var text = heading.textContent || heading.innerText || '';
+            var anchorId = heading.id || '';
             
-            var text = element.textContent || element.innerText || '';
-            if (text.length > fullContent.length) {
-              fullContent = text;
-            }
-            
-            if (headings.length === 0) {
-              var headingElements = element.querySelectorAll('h1, h2, h3, h4, h5, h6');
-              for (var k = 0; k < headingElements.length; k++) {
-                var heading = headingElements[k];
-                var level = parseInt(heading.tagName.substring(1));
-                var text = heading.textContent || heading.innerText || '';
-                var anchorId = heading.id || '';
-                
-                if (text.trim()) {
-                  headings.push({
-                    level: level,
-                    text: text.trim(),
-                    anchorId: anchorId
-                  });
-                }
-              }
+            if (text.trim()) {
+              headings.push({
+                level: level,
+                text: text.trim(),
+                anchorId: anchorId
+              });
             }
           }
         }
-        
-        return {
-          content: fullContent.replace(/\s+/g, ' ').trim(),
-          headings: headings
-        };
-      }).catch(function(error) {
-        console.warn('Failed to fetch content for ' + url + ':', error);
-        return { content: '', headings: [] };
-      });
+      }
     }
+    
+    return {
+      content: fullContent.replace(/\s+/g, ' ').trim(),
+      headings: headings
+    };
+  }).catch(function(error) {
+    console.warn('Failed to fetch content for ' + url + ':', error);
+    return { content: '', headings: [] };
+  });
+}
 
     function fetchRSS() {
       var url = new URL(location.href);
