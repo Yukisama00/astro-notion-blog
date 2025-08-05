@@ -1,0 +1,18 @@
+# robots.txt for togetogeshippo.net
+# 爬虫類飼育・繁殖記録サイト
+
+User-agent: *
+Allow: /
+
+# 画像ファイルへのクロールを許可（SEO上有効）
+Allow: *.jpg
+Allow: *.jpeg
+Allow: *.png
+Allow: *.gif
+Allow: *.webp
+
+# サイトマップの場所を指定
+Sitemap: https://togetogeshippo.net/sitemap.xml
+
+# クロール頻度の調整（大手検索エンジン向け）
+Crawl-delay: 1
