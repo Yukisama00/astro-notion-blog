@@ -30,4 +30,4 @@ public/notion/*
 !public/notion/.gitkeep
 
 # Gemini CLI specific files
-.github/workflows/gemini-*.yml
+#.github/workflows/gemini-*.yml
