@@ -52,20 +52,36 @@ const links = [
       posts.length === 0 ? (
         <NoContents contents={posts} />
       ) : (
-        <div class="post-list">
+        <div class="posts-grid">
           {posts.map((post) => (
-            <article key={post.Slug}>
-              <PostTitle post={post} enableLink={true} />
-              <div class="post-meta">
-                <PostDate post={post} />
-                <PostUpdateDate post={post} />
+            <article class="post-card">
+              <div class="card-image">
+                <PostFeaturedImage post={post} />
               </div>
-              <PostTags post={post} enableLink={true} />
-              <PostFeaturedImage post={post} />
-              <div class="post-excerpt">
-                <PostExcerpt post={post} />
+              <div class="card-content">
+                <div class="card-tags">
+                  <PostTags post={post} enableLink={true} />
+                </div>
+                <div class="card-title">
+                  <PostTitle post={post} enableLink={true} />
+                </div>
+                <div class="card-excerpt">
+                  <PostExcerpt post={post} />
+                </div>
+                <div class="card-meta">
+                  <div class="card-author">
+                    <img src="/icons/author-icon.png" alt="Author" class="author-avatar-small" />
+                    <span class="author-name">Yuki</span>
+                  </div>
+                  <div class="card-date">
+                    <PostDate post={post} />
+                    <PostUpdateDate post={post} />
+                  </div>
+                </div>
+                <div class="card-action">
+                  <ReadMoreLink post={post} />
+                </div>
               </div>
-              <ReadMoreLink post={post} />
             </article>
           ))}
         </div>
@@ -73,7 +89,7 @@ const links = [
     }
 
     <footer>
-      <Pagination currentPage={parseInt(page, 10)} numberOfPages={numberOfPages} />
+  <Pagination currentPage={parseInt(page, 10)} numberOfPages={numberOfPages} tag="" />
     </footer>
   </div>
 
