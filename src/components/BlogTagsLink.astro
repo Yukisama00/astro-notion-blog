@@ -5,7 +5,7 @@ import NoContents from './NoContents.astro'
 import '../styles/notion-color.css'
 
 export interface Props {
-  heading: string
+  heading?: string
   tags: SelectProperty[]
 }
 
@@ -14,7 +14,7 @@ const { heading, tags } = Astro.props
 
 
 <div class="blog-tags-link section">
-  <h3>{heading}</h3>
+  {heading && <h3>{heading}</h3>}
   {
     tags.length === 0 ? (
       <NoContents contents={tags} />

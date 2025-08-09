@@ -4,7 +4,7 @@ import { getPostLink } from '../lib/blog-helpers.ts'
 import NoContents from './NoContents.astro'
 
 export interface Props {
-  heading: string
+  heading?: string
   posts: Post[]
 }
 
@@ -12,7 +12,7 @@ const { heading, posts } = Astro.props
 ---
 
 <div class="blog-posts-link section">
-  <h3>{heading}</h3>
+  {heading && <h3>{heading}</h3>}
   {
     posts.length === 0 ? (
       <NoContents contents={posts} />

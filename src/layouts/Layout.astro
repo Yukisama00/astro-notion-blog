@@ -183,6 +183,21 @@ if (database.Icon && database.Icon.Type === 'file') {
             </div>
           </div>
 
+          <!-- Latest Posts Section -->
+          <div class="sidebar-card latest-posts-card">
+            <div class="card-header">
+              <div class="card-icon latest-posts-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h7l5 5v11a2 2 0 0 1-2 2z"/>
+                </svg>
+              </div>
+              <h3 class="card-title">最新記事</h3>
+            </div>
+            <div class="card-content latest-posts-content">
+              <slot name="latest-posts" />
+            </div>
+          </div>
+
           <!-- Categories Section -->
           <div class="sidebar-card categories-card">
             <div class="card-header">
@@ -191,10 +206,10 @@ if (database.Icon && database.Icon.Type === 'file') {
                   <path d="M3 7a2 2 0 0 1 2-2h4l2 3h8a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
                 </svg>
               </div>
-              <h3 class="card-title">Categories</h3>
+              <h3 class="card-title">記事カテゴリ</h3>
             </div>
             <div class="card-content categories-content">
-              <slot name="aside" />
+              <slot name="categories" />
             </div>
           </div>
 
