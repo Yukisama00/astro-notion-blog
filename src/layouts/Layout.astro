@@ -328,7 +328,7 @@ if (database.Icon && database.Icon.Type === 'file') {
     /* 高さの固定を解除 */
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 0; /* gapを0に変更 */
     /* 美しい内側の影 */
     box-shadow: inset 1px 0 0 rgba(255, 255, 255, 0.8);
   }
@@ -416,6 +416,12 @@ if (database.Icon && database.Icon.Type === 'file') {
     transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     /* カードの最小高さを確保 */
     flex-shrink: 0;
+    margin-bottom: 28px; /* エリア間のマージンを追加 */
+  }
+
+  /* 記事カテゴリエリアの下部マージンを削除 */
+  .categories-card {
+    margin-bottom: 0;
   }
 
   .sidebar-card::before {
@@ -485,6 +491,7 @@ if (database.Icon && database.Icon.Type === 'file') {
 
   /* About Card Specific Styling */
   .about-card .card-content {
+    margin-top: 20px;
     position: relative;
   }
 
