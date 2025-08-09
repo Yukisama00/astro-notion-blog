@@ -148,9 +148,8 @@ if (database.Icon && database.Icon.Type === 'file') {
                 </div>
               </div>
               <p class="profile-description">
-                トカゲ飼育の経験と知識を共有しています。<br>
-                爬虫類との生活をより豊かにするための<br>
-                情報をお届けします。
+                飼育種:アルマジロトカゲ、デプレッサイワトカゲ<br>
+                命を繋ぎ、このトカゲたちと1日でも長く暮らすことが目標。
               </p>
               <div class="profile-social-links">
                 <a href="https://x.com/yukisama00" target="_blank" rel="noopener noreferrer" class="profile-social-link twitter">
@@ -164,6 +163,28 @@ if (database.Icon && database.Icon.Type === 'file') {
                   </svg>
                 </a>
               </div>
+            </div>
+          </div>
+
+          <!-- About Section -->
+          <div class="sidebar-card about-card">
+            <div class="card-header">
+              <div class="card-icon about-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="12" cy="12" r="10"/>
+                  <path d="M12 16v-4"/>
+                  <path d="M12 8h.01"/>
+                </svg>
+              </div>
+              <h3 class="card-title">About This Blog</h3>
+            </div>
+            <div class="card-content">
+              <p class="about-text">
+                当ブログは情報の共有を目的としております。<br>
+                <b>本ブログの内容は独自の経験・実践・思考に基づくものであり、
+                内容の実践による影響や成果については一切保証いたしません。</b><br>
+                また、生体の販売は行っておりません。
+              </p>
             </div>
           </div>
 
@@ -210,29 +231,6 @@ if (database.Icon && database.Icon.Type === 'file') {
             </div>
             <div class="card-content categories-content">
               <slot name="categories" />
-            </div>
-          </div>
-
-          <!-- About Section -->
-          <div class="sidebar-card about-card">
-            <div class="card-header">
-              <div class="card-icon about-icon">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <circle cx="12" cy="12" r="10"/>
-                  <path d="M12 16v-4"/>
-                  <path d="M12 8h.01"/>
-                </svg>
-              </div>
-              <h3 class="card-title">About This Blog</h3>
-            </div>
-            <div class="card-content">
-              <p class="about-text">
-                当ブログは情報の共有を目的としています。<br>
-                内容や飼育の方法は独自のものであること、<br>
-                また、成果を保証するものではないこと、<br>
-                これらをご承知おきの上でご覧ください。<br>
-                生体の販売等は行っておりません。
-              </p>
             </div>
           </div>
         </aside>
