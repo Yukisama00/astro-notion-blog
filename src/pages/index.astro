@@ -18,7 +18,6 @@ import ReadMoreLink from '../components/ReadMoreLink.astro'
 import Pagination from '../components/Pagination.astro'
 import BlogPostsLink from '../components/BlogPostsLink.astro'
 import BlogTagsLink from '../components/BlogTagsLink.astro'
-import SNSLink from '../components/SNSLink.astro'
 import styles from '../styles/blog.module.css'
 
 const [posts, rankedPosts, tags, numberOfPages] = await Promise.all([
@@ -34,7 +33,13 @@ const links = [
 ]
 ---
 
-<Layout>
+
+<Layout
+  title="トップページ"
+  description="Notionで管理するブログのトップページです。"
+  path="/"
+  ogImage="/default-og-image.png"
+>
   <div slot="main" class={`${styles.main} card-layout`}>
     {
       posts.length === 0 ? (
@@ -42,16 +47,16 @@ const links = [
       ) : (
         <div class="posts-grid">
           {posts.map((post) => (
-            <article class="post-card" key={post.Slug}>
+            <article class="post-card">
               <div class="card-image">
                 <PostFeaturedImage post={post} />
               </div>
               <div class="card-content">
                 <div class="card-tags">
-                  <PostTags post={post} />
+                  <PostTags post={post} enableLink={true} />
                 </div>
                 <div class="card-title">
-                  <PostTitle post={post} />
+                  <PostTitle post={post} enableLink={true} />
                 </div>
                 <div class="card-excerpt">
                   <PostExcerpt post={post} />
@@ -77,16 +82,13 @@ const links = [
     }
 
     <footer>
-      <Pagination currentPage={1} numberOfPages={numberOfPages} />
+      <Pagination currentPage={1} numberOfPages={numberOfPages} tag="" />
     </footer>
   </div>
 
   <div slot="aside" class={styles.aside}>
     <BlogPostsLink heading="最新記事" posts={rankedPosts} />
     <BlogTagsLink heading="記事カテゴリ" tags={tags} />
-    <!--
-    <SNSLink heading="リンク" links={links} />
-     -->
   </div>
 </Layout>
 
