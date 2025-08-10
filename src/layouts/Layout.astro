@@ -186,6 +186,7 @@ if (database.Icon && database.Icon.Type === 'file') {
             </div>
           </div>
 
+          <!-- Search機能の一時無効化
           <div class="sidebar-card search-card">
             <div class="card-header">
               <div class="card-icon search-icon">
@@ -200,6 +201,7 @@ if (database.Icon && database.Icon.Type === 'file') {
               <SearchButton />
             </div>
           </div>
+          -->
 
           <div class="sidebar-card latest-posts-card">
             <div class="card-header">
@@ -232,7 +234,9 @@ if (database.Icon && database.Icon.Type === 'file') {
       </div>
     </div>
 
+    <!-- Search機能の一時無効化
     <SearchModal />
+     -->
     {
       ENABLE_LIGHTBOX && (
         <script src={getStaticFilePath('/scripts/fslightbox.js')}></script>
