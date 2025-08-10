@@ -93,7 +93,7 @@ if (database.Icon && database.Icon.Type === 'file') {
       <div>
         <main>
           <div class="content">
-            <!-- ブログタイトル（h1）を削除 -->
+            <header>
               <div class="description">
                 {database.Description && database.Description.replace('我が家のトカゲたちの記録を残しています。', '')}
               </div>
@@ -102,17 +102,13 @@ if (database.Icon && database.Icon.Type === 'file') {
             <slot name="main" />
 
             <footer>
-              
-              <!-- 従来のフッター情報 -->
               <div class="footer-info">
                 <div>
                   <a href="/" style="color:inherit; text-decoration:underline;">{database.Title}</a>
                 </div>
                 <div>
                   <span>Powered by&nbsp;</span>
-                  <a href="https://github.com/otoyo/astro-notion-blog"
-                    >astro-notion-blog</a
-                  >
+                  <a href="https://github.com/otoyo/astro-notion-blog">astro-notion-blog</a>
                 </div>
               </div>
             </footer>
@@ -120,7 +116,6 @@ if (database.Icon && database.Icon.Type === 'file') {
         </main>
 
         <aside class="sidebar">
-          <!-- Floating Elements Background -->
           <div class="sidebar-bg-decoration">
             <div class="floating-orb orb-1"></div>
             <div class="floating-orb orb-2"></div>
@@ -128,7 +123,6 @@ if (database.Icon && database.Icon.Type === 'file') {
             <div class="floating-orb orb-4"></div>
           </div>
 
-          <!-- Profile Section -->
           <div class="sidebar-card profile-card">
             <div class="card-header">
               <div class="card-icon profile-icon">
@@ -156,20 +150,20 @@ if (database.Icon && database.Icon.Type === 'file') {
                 <a href="https://mixi.social/@yukisama00" target="_blank" rel="noopener noreferrer" class="profile-social-link mixi2">
                   <img src="/icons/mixi2_Symbol_FullColor.png" alt="mixi2" width="16" height="16" style="display:inline-block;vertical-align:middle;" />
                 </a>
-              <a href="https://x.com/yukisama00" target="_blank" rel="noopener noreferrer" class="profile-social-link twitter">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
-                </svg>
-              </a>
-              <a href="https://www.youtube.com/@altu4616" target="_blank" rel="noopener noreferrer" class="profile-social-link youtube">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
-                </svg>
-              </a>
+                <a href="https://x.com/yukisama00" target="_blank" rel="noopener noreferrer" class="profile-social-link twitter">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+                  </svg>
+                </a>
+                <a href="https://www.youtube.com/@altu4616" target="_blank" rel="noopener noreferrer" class="profile-social-link youtube">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+                  </svg>
+                </a>
+              </div>
             </div>
           </div>
 
-          <!-- About Section -->
           <div class="sidebar-card about-card">
             <div class="card-header">
               <div class="card-icon about-icon">
@@ -191,7 +185,6 @@ if (database.Icon && database.Icon.Type === 'file') {
             </div>
           </div>
 
-          <!-- Search Section -->
           <div class="sidebar-card search-card">
             <div class="card-header">
               <div class="card-icon search-icon">
@@ -207,7 +200,6 @@ if (database.Icon && database.Icon.Type === 'file') {
             </div>
           </div>
 
-          <!-- Latest Posts Section -->
           <div class="sidebar-card latest-posts-card">
             <div class="card-header">
               <div class="card-icon latest-posts-icon">
@@ -222,7 +214,6 @@ if (database.Icon && database.Icon.Type === 'file') {
             </div>
           </div>
 
-          <!-- Categories Section -->
           <div class="sidebar-card categories-card">
             <div class="card-header">
               <div class="card-icon categories-icon">
@@ -820,12 +811,12 @@ if (database.Icon && database.Icon.Type === 'file') {
   div.cover img {
     display: block;
     width: 100%;
-    height: auto; /* 固定高さを削除してアスペクト比を維持 */
-    max-height: 400px; /* 最大高さを設定して極端に大きくなるのを防ぐ */
-    object-fit: contain; /* coverからcontainに変更して全体を表示 */
+    height: auto;
+    max-height: 400px;
+    object-fit: contain;
     object-position: center;
     transition: transform 0.3s ease;
-    background: #f8fafc; /* 画像の余白部分の背景色 */
+    background: #f8fafc;
   }
   @media (min-width: 769px) {
     div.cover img {
@@ -839,7 +830,7 @@ if (database.Icon && database.Icon.Type === 'file') {
     bottom: 0;
     left: 0;
     right: 0;
-    height: 40px; /* グラデーション効果を軽減 */
+    height: 40px;
     background: linear-gradient(transparent, rgba(0,0,0,0.05));
     pointer-events: none;
   }
