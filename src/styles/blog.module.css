@@ -9,7 +9,11 @@
   border-top: 1px solid rgba(148, 163, 184, 0.1);
   margin: 48px auto 0;
   padding: 32px 0 0;
-  background: linear-gradient(135deg, rgba(248, 250, 252, 0.5) 0%, rgba(241, 245, 249, 0.5) 100%);
+  background: linear-gradient(
+    135deg,
+    rgba(248, 250, 252, 0.5) 0%,
+    rgba(241, 245, 249, 0.5) 100%
+  );
   border-radius: 16px;
   margin-top: 48px;
 }
@@ -36,7 +40,11 @@
   padding: 24px;
   border: 1px solid rgba(148, 163, 184, 0.1);
   border-radius: 16px;
-  background: linear-gradient(135deg, rgba(248, 250, 252, 0.8) 0%, rgba(241, 245, 249, 0.8) 100%);
+  background: linear-gradient(
+    135deg,
+    rgba(248, 250, 252, 0.8) 0%,
+    rgba(241, 245, 249, 0.8) 100%
+  );
   backdrop-filter: blur(10px);
 }
 
@@ -81,18 +89,22 @@
   position: relative;
   margin: 48px 0 24px 0;
   padding: 20px 24px;
-  background: linear-gradient(135deg, 
-    rgba(255, 255, 255, 0.9) 0%, 
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.9) 0%,
     rgba(248, 250, 252, 0.9) 100%
   );
   border: 1px solid rgba(148, 163, 184, 0.15);
   border-left: 4px solid transparent;
   border-radius: 12px;
-  font-family: 'Inter', -apple-system, sans-serif;
+  font-family:
+    'Inter',
+    -apple-system,
+    sans-serif;
   font-weight: 700;
   color: #1e293b;
   backdrop-filter: blur(10px);
-  box-shadow: 
+  box-shadow:
     0 4px 20px rgba(0, 0, 0, 0.06),
     inset 0 1px 0 rgba(255, 255, 255, 0.6);
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -132,7 +144,7 @@
 .post h2:not([class~='post-title']):hover,
 .post h3:not([class~='post-title']):hover {
   transform: translateY(-2px);
-  box-shadow: 
+  box-shadow:
     0 8px 32px rgba(0, 0, 0, 0.1),
     inset 0 1px 0 rgba(255, 255, 255, 0.8);
   border-color: rgba(59, 130, 246, 0.3);
@@ -169,15 +181,15 @@
     padding: 16px 20px;
     border-radius: 10px;
   }
-  
+
   .post h1:not([class~='post-title']) {
     font-size: 1.5rem;
   }
-  
+
   .post h2:not([class~='post-title']) {
     font-size: 1.3rem;
   }
-  
+
   .post h3:not([class~='post-title']) {
     font-size: 1.125rem;
   }
@@ -189,15 +201,16 @@ div.blog-post {
   border-radius: 20px;
   margin-bottom: 32px;
   padding: 32px;
-  background: linear-gradient(135deg, 
-    rgba(255, 255, 255, 0.9) 0%, 
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.9) 0%,
     rgba(248, 250, 252, 0.9) 100%
   );
   backdrop-filter: blur(10px);
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
   overflow: hidden;
-  box-shadow: 
+  box-shadow:
     0 4px 20px rgba(0, 0, 0, 0.06),
     inset 0 1px 0 rgba(255, 255, 255, 0.6);
 }
@@ -210,18 +223,19 @@ div.blog-post::before {
   left: 0;
   right: 0;
   height: 1px;
-  background: linear-gradient(90deg, 
-    transparent, 
-    rgba(59, 130, 246, 0.3), 
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(59, 130, 246, 0.3),
     rgba(139, 92, 246, 0.3),
-    rgba(6, 182, 212, 0.3), 
+    rgba(6, 182, 212, 0.3),
     transparent
   );
 }
 
 div.blog-post:hover {
   transform: translateY(-6px);
-  box-shadow: 
+  box-shadow:
     0 20px 60px rgba(0, 0, 0, 0.12),
     0 8px 25px rgba(0, 0, 0, 0.08),
     inset 0 1px 0 rgba(255, 255, 255, 0.8);
@@ -234,7 +248,7 @@ div.blog-post:hover {
     border-radius: 16px;
     margin-bottom: 24px;
   }
-  
+
   div.blog-post:hover {
     transform: translateY(-3px);
   }
@@ -314,8 +328,9 @@ div.blog-post:hover {
 .post blockquote {
   margin: 32px 0;
   padding: 24px 28px;
-  background: linear-gradient(135deg, 
-    rgba(59, 130, 246, 0.05) 0%, 
+  background: linear-gradient(
+    135deg,
+    rgba(59, 130, 246, 0.05) 0%,
     rgba(139, 92, 246, 0.05) 100%
   );
   border-left: 4px solid #3b82f6;
@@ -370,7 +385,9 @@ div.blog-post:hover {
   height: 12px;
   border-radius: 50%;
   background: #ef4444;
-  box-shadow: 20px 0 #f59e0b, 40px 0 #10b981;
+  box-shadow:
+    20px 0 #f59e0b,
+    40px 0 #10b981;
 }
 
 .post pre code {
@@ -419,8 +436,9 @@ div.blog-post:hover {
 }
 
 .post table tr:hover {
-  background: linear-gradient(135deg, 
-    rgba(59, 130, 246, 0.02) 0%, 
+  background: linear-gradient(
+    135deg,
+    rgba(59, 130, 246, 0.02) 0%,
     rgba(139, 92, 246, 0.02) 100%
   );
 }
@@ -448,7 +466,11 @@ div.blog-post:hover {
   font-weight: 500;
   position: relative;
   transition: all 0.2s ease;
-  background: linear-gradient(135deg, transparent 0%, rgba(59, 130, 246, 0.05) 100%);
+  background: linear-gradient(
+    135deg,
+    transparent 0%,
+    rgba(59, 130, 246, 0.05) 100%
+  );
   padding: 2px 4px;
   border-radius: 4px;
 }
@@ -468,7 +490,11 @@ div.blog-post:hover {
 
 .post a:not(.no-style):hover {
   color: #2563eb;
-  background: linear-gradient(135deg, rgba(59, 130, 246, 0.08) 0%, rgba(139, 92, 246, 0.08) 100%);
+  background: linear-gradient(
+    135deg,
+    rgba(59, 130, 246, 0.08) 0%,
+    rgba(139, 92, 246, 0.08) 100%
+  );
 }
 
 .post a:not(.no-style):hover::after {
@@ -480,27 +506,27 @@ div.blog-post:hover {
   .post {
     margin: 0 auto 32px;
   }
-  
+
   .post p {
     font-size: 0.95rem;
     line-height: 1.7;
     margin-bottom: 20px;
   }
-  
+
   .post table {
     font-size: 0.875rem;
   }
-  
+
   .post table th,
   .post table td {
     padding: 12px 16px;
   }
-  
+
   .post blockquote {
     margin: 24px 0;
     padding: 20px 24px;
   }
-  
+
   .post pre {
     padding: 20px;
     margin: 24px 0;
@@ -521,19 +547,31 @@ div.blog-post:hover {
 }
 
 .post .info-box {
-  background: linear-gradient(135deg, rgba(59, 130, 246, 0.08) 0%, rgba(139, 92, 246, 0.08) 100%);
+  background: linear-gradient(
+    135deg,
+    rgba(59, 130, 246, 0.08) 0%,
+    rgba(139, 92, 246, 0.08) 100%
+  );
   border-left-color: #3b82f6;
   color: #1e40af;
 }
 
 .post .warning-box {
-  background: linear-gradient(135deg, rgba(245, 158, 11, 0.08) 0%, rgba(217, 119, 6, 0.08) 100%);
+  background: linear-gradient(
+    135deg,
+    rgba(245, 158, 11, 0.08) 0%,
+    rgba(217, 119, 6, 0.08) 100%
+  );
   border-left-color: #f59e0b;
   color: #92400e;
 }
 
 .post .success-box {
-  background: linear-gradient(135deg, rgba(16, 185, 129, 0.08) 0%, rgba(5, 150, 105, 0.08) 100%);
+  background: linear-gradient(
+    135deg,
+    rgba(16, 185, 129, 0.08) 0%,
+    rgba(5, 150, 105, 0.08) 100%
+  );
   border-left-color: #10b981;
   color: #065f46;
 }
