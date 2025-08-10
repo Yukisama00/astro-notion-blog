@@ -27,10 +27,10 @@
   margin-bottom: 0.5rem; /* タイトルの下に余白を追加 */
 }
 
-.post h1:not([class~="post-title"]),
-.post h2:not([class~="post-title"]),
-.post h3:not([class~="post-title"]) {
-  border-left: 4px solid #007BFF;
+.post h1:not([class~='post-title']),
+.post h2:not([class~='post-title']),
+.post h3:not([class~='post-title']) {
+  border-left: 4px solid #007bff;
   background-color: #f0f8ff;
   padding: 8px 12px;
   margin-bottom: 1.5rem;
@@ -46,7 +46,9 @@ div.blog-post {
   margin-bottom: var(--gap); /* 各 blog-post 間に余白を追加 */
   padding: var(--gap); /* 内側の余白を追加 */
   background-color: var(--background-color); /* 背景色を設定 */
-  transition: transform 0.3s ease, box-shadow 0.3s ease; /* アニメーションを追加 */
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease; /* アニメーションを追加 */
 }
 
 div.blog-post:hover {

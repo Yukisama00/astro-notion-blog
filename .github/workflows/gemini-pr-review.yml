@@ -108,7 +108,6 @@ jobs:
             echo "EOF"
           } >> "${GITHUB_OUTPUT}"
 
-
       - name: 'Get PR details (issue_comment)'
         id: 'get_pr_comment'
         if: |-
@@ -439,7 +438,6 @@ jobs:
             ## Final Instructions
 
             Remember, you are running in a VM and no one reviewing your output. Your review must be posted to GitHub using the MCP tools to create a pending review, add comments to the pending review, and submit the pending review.
-
 
       - name: 'Post PR review failure comment'
         if: |-
