@@ -33,13 +33,11 @@ const id = buildHeadingId(block.Heading3)
       </div>
     </details>
   ) : (
-    <a href={`#${id}`} id={id}>
-      <h5>
+    <h5 id={id}>
         {block.Heading3.RichTexts.map((richText: interfaces.RichText) => (
           <RichText richText={richText} />
         ))}
       </h5>
-    </a>
   )
 }
 

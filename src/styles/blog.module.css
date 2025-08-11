@@ -87,7 +87,7 @@
 .post h2:not([class~='post-title']),
 .post h3:not([class~='post-title']) {
   position: relative;
-  margin: 48px 0 24px 0;
+  margin: 24px 0 16px 0;
   padding: 20px 24px;
   background: linear-gradient(
     135deg,
