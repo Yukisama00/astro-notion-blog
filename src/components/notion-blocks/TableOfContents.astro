@@ -1,6 +1,6 @@
 ---
 import * as interfaces from '../../lib/interfaces.ts'
-import { buildHeadingId } from '../../lib/blog-helpers.ts'
+import { getTextContent, slugify } from '../../lib/blog-helpers.ts'
 import { snakeToKebab } from '../../lib/style-helpers.ts'
 import '../../styles/notion-color.css'
 
@@ -12,7 +12,7 @@ export interface Props {
 const { block, headings } = Astro.props
 ---
 
-<div class="table-of-contents">
+<div class="table-of-contents" id="toc">
   {
     headings.map((headingBlock: interfaces.Block) => {
       const heading =
@@ -27,7 +27,7 @@ const { block, headings } = Astro.props
 
       return (
         <a
-          href={`#${buildHeadingId(heading)}`}
+          href={`#${slugify(getTextContent(heading.RichTexts))}`}
           class={`table-of-contents ${snakeToKebab(
             block.TableOfContents.Color
           )} ${indentClass}`}

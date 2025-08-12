@@ -149,6 +149,16 @@ export const getPageLink = (page: number, tag: string) => {
     : pathJoin(BASE_PATH, `/posts/page/${page.toString()}`)
 }
 
+export const slugify = (text: string) => {
+  return text
+    .toString()
+    .toLowerCase()
+    .trim()
+    .replace(/\s+/g, '-')
+    .replace(/[^\w-]+/g, '')
+    .replace(/--+/g, '-')
+}
+
 export const getDateStr = (date: string) => {
   const dt = new Date(date)
 
@@ -176,6 +186,10 @@ export const buildHeadingId = (heading: Heading1 | Heading2 | Heading3) => {
   })
     .join()
     .trim()
+}
+
+export const getTextContent = (richTexts: RichText[]) => {
+  return richTexts.map((richText) => richText.PlainText).join('')
 }
 
 export const isTweetURL = (url: URL): boolean => {

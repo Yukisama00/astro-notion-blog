@@ -1,0 +1,178 @@
+---
+// This component does not receive any props.
+// It dynamically generates the Table of Contents on the client-side.
+---
+
+<div id="floating-toc-container" class="floating-toc-container">
+  <button id="floating-toc-toggle">目次</button>
+  <div id="floating-toc-menu" class="floating-toc-menu">
+    <h4>目次</h4>
+    <ul id="floating-toc-list"></ul>
+  </div>
+</div>
+
+<style>
+  .floating-toc-container {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 1000;
+  }
+
+  #floating-toc-toggle {
+    background-color: var(--accents-3);
+    color: var(--fg);
+    border: 1px solid var(--accents-2);
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    transition: all 0.2s ease-in-out;
+  }
+
+  #floating-toc-toggle:hover {
+    transform: scale(1.1);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+  }
+
+  .floating-toc-menu {
+    display: none;
+    position: absolute;
+    bottom: 80px;
+    right: 0;
+    width: 300px;
+    max-height: 40vh;
+    overflow-y: auto;
+    background-color: rgba(255, 255, 255, 0.85);
+    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(8px);
+    border: 1px solid var(--accents-2);
+    border-radius: 8px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    padding: 16px;
+  }
+
+  .floating-toc-menu.show {
+    display: block;
+  }
+
+  .floating-toc-menu h4 {
+    margin-top: 0;
+    margin-bottom: 12px;
+    font-size: 1.1rem;
+    border-bottom: 1px solid var(--accents-2);
+    padding-bottom: 8px;
+  }
+
+  .floating-toc-menu ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .floating-toc-menu li a {
+    display: block;
+    color: var(--fg);
+    text-decoration: none;
+    padding: 8px 12px;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    transition: background-color 0.2s;
+  }
+
+  .floating-toc-menu li a:hover {
+    background-color: var(--accents-1);
+  }
+
+  .floating-toc-menu li a.active {
+    background-color: var(--accents-2);
+    font-weight: bold;
+  }
+
+  .floating-toc-menu li.h3 a {
+    padding-left: 28px;
+  }
+
+  .floating-toc-container.hidden {
+    display: none;
+  }
+</style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const toc = document.getElementById('toc');
+    const floatingTocContainer = document.getElementById('floating-toc-container');
+    const toggleButton = document.getElementById('floating-toc-toggle');
+    const tocMenu = document.getElementById('floating-toc-menu');
+    const tocList = document.getElementById('floating-toc-list');
+
+    if (!toc || !floatingTocContainer || !toggleButton || !tocMenu || !tocList) {
+      if(floatingTocContainer) floatingTocContainer.classList.add('hidden');
+      return;
+    }
+
+    const headings = document.querySelectorAll('.post-body h2[id], .post-body h3[id]');
+    if (headings.length === 0) {
+      floatingTocContainer.classList.add('hidden');
+      return;
+    }
+
+    headings.forEach(heading => {
+      const li = document.createElement('li');
+      const a = document.createElement('a');
+      a.href = `#${heading.id}`;
+      a.textContent = heading.textContent;
+      a.dataset.targetId = heading.id;
+      li.appendChild(a);
+      li.classList.add(heading.tagName.toLowerCase());
+      tocList.appendChild(li);
+    });
+
+    // Toggle menu visibility
+    toggleButton.addEventListener('click', (e) => {
+      e.stopPropagation();
+      tocMenu.classList.toggle('show');
+    });
+
+    document.addEventListener('click', (e) => {
+      if (!tocMenu.contains(e.target) && !toggleButton.contains(e.target)) {
+        tocMenu.classList.remove('show');
+      }
+    });
+
+    // Show/hide floating TOC based on original TOC visibility
+    const tocObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          floatingTocContainer.classList.add('hidden');
+        } else {
+          floatingTocContainer.classList.remove('hidden');
+        }
+      });
+    }, { rootMargin: "0px 0px -100% 0px" });
+
+    tocObserver.observe(toc);
+
+    // Highlight active heading in floating TOC
+    const headingObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        const id = entry.target.getAttribute('id');
+        const link = tocList.querySelector(`a[data-target-id="${id}"]`);
+        if (link) {
+          if (entry.isIntersecting) {
+            link.classList.add('active');
+          } else {
+            link.classList.remove('active');
+          }
+        }
+      });
+    }, { rootMargin: "-40% 0px -60% 0px" });
+
+    headings.forEach(heading => {
+      headingObserver.observe(heading);
+    });
+  });
+</script>

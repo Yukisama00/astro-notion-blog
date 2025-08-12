@@ -26,6 +26,7 @@ import PostRelativeLink from '../../components/PostRelativeLink.astro'
 import BlogPostsLink from '../../components/BlogPostsLink.astro'
 import BlogTagsLink from '../../components/BlogTagsLink.astro'
 import SNSLink from '../../components/SNSLink.astro'
+import FloatingTOC from '../../components/FloatingTOC.astro'
 import styles from '../../styles/blog.module.css'
 
 export async function getStaticPaths() {
@@ -125,3 +126,4 @@ if (post.FeaturedImage && post.FeaturedImage.Url) {
     <BlogTagsLink heading="記事カテゴリ" tags={tags} />
   </div>
 </Layout>
+<FloatingTOC />
