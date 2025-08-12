@@ -37,40 +37,69 @@ const [posts, rankedPosts, tags, numberOfPages] = await Promise.all([
   getNumberOfPagesByTag(tag),
 ])
 
-const currentTag = posts[0].Tags.find((t) => t.name === tag)
+const currentTag =
+  posts.length > 0 ? posts[0].Tags.find((t) => t.name === tag) : null
 
 const links = [
   { href: 'https://x.com/yukisama00', src: '/icons/x.png', alt: 'X' },
-  { href: 'https://www.youtube.com/@altu4616', src: '/icons/youtube.png', alt: 'YouTube' },
+  {
+    href: 'https://www.youtube.com/@altu4616',
+    src: '/icons/youtube.png',
+    alt: 'YouTube',
+  },
 ]
 ---
 
 <Layout title={`Posts in ${tag}`} path={`/posts/tag/${tag}`}>
-  <div slot="main" class={styles.main}>
+  <div slot="main" class={`${styles.main} card-layout`}>
     <header>
-      <div class="tag-container">
-        <span class={`tag ${currentTag.color}`}>{tag}</span>
-      </div>
+      {
+        currentTag && (
+          <div class="tag-container">
+            <span class={`tag ${currentTag.color}`}>{tag}</span>
+          </div>
+        )
+      }
     </header>
 
     {
       posts.length === 0 ? (
         <NoContents contents={posts} />
       ) : (
-        <div class="post-list">
+        <div class="posts-grid">
           {posts.map((post) => (
-            <article>
-              <PostTitle post={post} enableLink={true} />
-              <div class="post-meta">
-                <PostDate post={post} />
-                <PostUpdateDate post={post} />
+            <article class="post-card">
+              <div class="card-image">
+                <PostFeaturedImage post={post} />
               </div>
-              <PostTags post={post} enableLink={true} />
-              <PostFeaturedImage post={post} />
-              <div class="post-excerpt">
-                <PostExcerpt post={post} />
+              <div class="card-content">
+                <div class="card-tags">
+                  <PostTags post={post} enableLink={true} />
+                </div>
+                <div class="card-title">
+                  <PostTitle post={post} enableLink={true} />
+                </div>
+                <div class="card-excerpt">
+                  <PostExcerpt post={post} />
+                </div>
+                <div class="card-meta">
+                  <div class="card-author">
+                    <img
+                      src="/icons/author-icon.png"
+                      alt="Author"
+                      class="author-avatar-small"
+                    />
+                    <span class="author-name">Yuki</span>
+                  </div>
+                  <div class="card-date">
+                    <PostDate post={post} />
+                    <PostUpdateDate post={post} />
+                  </div>
+                </div>
+                <div class="card-action">
+                  <ReadMoreLink post={post} />
+                </div>
               </div>
-              <ReadMoreLink post={post} />
             </article>
           ))}
         </div>
@@ -82,27 +111,262 @@ const links = [
     </footer>
   </div>
 
-  <div slot="aside" class={styles.aside}>
+  <div slot="latest-posts" class={styles.aside}>
     <BlogPostsLink heading="最新記事" posts={rankedPosts} />
+  </div>
+  <div slot="categories" class={styles.aside}>
     <BlogTagsLink heading="記事カテゴリ" tags={tags} />
   </div>
 </Layout>
 
 <style>
+  header {
+    margin-bottom: 32px;
+  }
   .tag-container {
     margin: 0;
     line-height: 1.3;
-    font-size: 1.2rem;
-    font-weight: normal;
+    font-size: 1.5rem;
+    font-weight: 700;
   }
   @media (max-width: 640px) {
     .tag-container {
-      font-size: 1.15rem;
+      font-size: 1.25rem;
     }
   }
   .tag-container span.tag {
-    border-radius: 4px;
-    padding: 3px 9px;
+    border-radius: 6px;
+    padding: 6px 12px;
     background: var(--tag-bg-light-gray);
+    text-transform: capitalize;
+  }
+
+  .card-layout {
+    padding: 32px 0;
+  }
+
+  .posts-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 32px;
+    margin-bottom: 48px;
+  }
+
+  @media (max-width: 768px) {
+    .posts-grid {
+      grid-template-columns: 1fr;
+      gap: 24px;
+    }
+  }
+
+  .post-card {
+    background: #ffffff;
+    border-radius: 16px;
+    border: 1px solid rgba(148, 163, 184, 0.15);
+    overflow: hidden;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  }
+
+  .post-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #3b82f6, #8b5cf6, #06b6d4);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.3s ease;
+  }
+
+  .post-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1),
+      0 8px 16px rgba(0, 0, 0, 0.06);
+    border-color: rgba(59, 130, 246, 0.3);
+  }
+
+  .post-card:hover::before {
+    transform: scaleX(1);
+  }
+
+  .card-image {
+    position: relative;
+    overflow: hidden;
+    height: 200px;
+    background: #f8fafc;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .card-image :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+  }
+
+  .card-image :global(.featured-image) {
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  .post-card:hover .card-image :global(img) {
+    transform: scale(1.05);
+  }
+
+  .card-content {
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .card-tags {
+    order: 1;
+  }
+
+  .card-title {
+    order: 2;
+  }
+
+  .card-title :global(h2) {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #1e293b;
+    margin: 0;
+    line-height: 1.4;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .card-excerpt {
+    order: 3;
+    flex: 1;
+  }
+
+  .card-excerpt :global(p) {
+    color: #64748b;
+    font-size: 0.9rem;
+    line-height: 1.6;
+    margin: 0;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .card-meta {
+    order: 4;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 16px;
+    border-top: 1px solid rgba(148, 163, 184, 0.1);
+    font-size: 0.875rem;
+  }
+
+  .card-author {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .author-avatar-small {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    border: 2px solid white;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+
+  .author-name {
+    font-weight: 600;
+    color: #374151;
+  }
+
+  .card-date {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 2px;
+    color: #64748b;
+    font-size: 0.8rem;
+  }
+
+  .card-action {
+    order: 5;
+    margin-top: 8px;
+  }
+
+  .card-action :global(a) {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: #3b82f6;
+    font-weight: 600;
+    font-size: 0.875rem;
+    text-decoration: none;
+    transition: all 0.2s ease;
+  }
+
+  .card-action :global(a:hover) {
+    color: #2563eb;
+    gap: 12px;
+  }
+
+  .card-action :global(a:hover::after) {
+    transform: translateX(2px);
+  }
+
+  .card-tags :global(.post-tag) {
+    display: inline-block;
+    background: linear-gradient(135deg, #f1f5f9, #e2e8f0);
+    color: #475569;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    margin-right: 8px;
+    margin-bottom: 4px;
+    border: 1px solid rgba(148, 163, 184, 0.2);
+    transition: all 0.2s ease;
+  }
+
+  .card-tags :global(.post-tag:hover) {
+    background: linear-gradient(135deg, #e2e8f0, #cbd5e1);
+    transform: translateY(-1px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+
+  @media (max-width: 768px) {
+    .card-content {
+      padding: 20px;
+      gap: 12px;
+    }
+
+    .card-image {
+      height: 180px;
+    }
+
+    .card-title :global(h2) {
+      font-size: 1.125rem;
+    }
+
+    .card-meta {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 8px;
+    }
+
+    .card-date {
+      align-items: flex-start;
+    }
   }
 </style>
