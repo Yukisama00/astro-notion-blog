@@ -44,19 +44,31 @@
     bottom: 80px;
     right: 0;
     width: 300px;
-    max-height: 40vh;
+    max-height: 50vh;
     overflow-y: auto;
-    background-color: rgba(255, 255, 255, 0.85);
-    -webkit-backdrop-filter: blur(8px);
-    backdrop-filter: blur(8px);
+    background-color: rgba(255, 255, 255, 0.95);
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
     border: 1px solid var(--accents-2);
-    border-radius: 8px;
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    border-radius: 12px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
     padding: 16px;
   }
 
   .floating-toc-menu.show {
     display: block;
+    animation: fadeInUp 0.3s ease-out;
+  }
+
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
 
   .floating-toc-menu h4 {
@@ -65,6 +77,8 @@
     font-size: 1.1rem;
     border-bottom: 1px solid var(--accents-2);
     padding-bottom: 8px;
+    color: var(--fg);
+    font-weight: 600;
   }
 
   .floating-toc-menu ul {
@@ -78,34 +92,95 @@
     color: var(--fg);
     text-decoration: none;
     padding: 8px 12px;
-    border-radius: 4px;
+    border-radius: 6px;
     font-size: 0.9rem;
-    transition: background-color 0.2s;
+    transition: all 0.2s ease;
+    border-left: 3px solid transparent;
+    line-height: 1.4;
   }
 
   .floating-toc-menu li a:hover {
     background-color: var(--accents-1);
+    border-left-color: rgba(59, 130, 246, 0.3);
+    transform: translateX(2px);
   }
 
   .floating-toc-menu li a.active {
     background-color: var(--accents-2);
-    font-weight: bold;
+    border-left-color: #3b82f6;
+    font-weight: 600;
+    color: #3b82f6;
   }
 
+  /* 見出しレベル別のスタイリング */
   .floating-toc-menu li.h1 a {
     padding-left: 12px;
+    font-weight: 700;
+    font-size: 0.95rem;
+    color: var(--fg);
   }
 
   .floating-toc-menu li.h2 a {
     padding-left: 28px;
+    font-size: 0.9rem;
+    color: rgba(var(--fg-rgb), 0.85);
   }
 
   .floating-toc-menu li.h3 a {
     padding-left: 44px;
+    font-size: 0.85rem;
+    color: rgba(var(--fg-rgb), 0.7);
+  }
+
+  /* アクティブ状態での色調整 */
+  .floating-toc-menu li.h1 a.active {
+    color: #1e40af;
+  }
+
+  .floating-toc-menu li.h2 a.active {
+    color: #2563eb;
+  }
+
+  .floating-toc-menu li.h3 a.active {
+    color: #3b82f6;
   }
 
   .floating-toc-container.hidden {
     display: none;
+  }
+
+  /* スクロールバーのカスタマイズ */
+  .floating-toc-menu::-webkit-scrollbar {
+    width: 4px;
+  }
+
+  .floating-toc-menu::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .floating-toc-menu::-webkit-scrollbar-thumb {
+    background: rgba(59, 130, 246, 0.3);
+    border-radius: 2px;
+  }
+
+  .floating-toc-menu::-webkit-scrollbar-thumb:hover {
+    background: rgba(59, 130, 246, 0.5);
+  }
+
+  /* モバイル対応 */
+  @media (max-width: 768px) {
+    .floating-toc-menu {
+      width: calc(100vw - 40px);
+      max-width: 280px;
+      right: 0;
+      left: auto;
+    }
+    
+    #floating-toc-toggle {
+      width: 55px;
+      height: 55px;
+      font-size: 0.9rem;
+    }
   }
 </style>
 
@@ -117,23 +192,52 @@
     const tocMenu = document.getElementById('floating-toc-menu');
     const tocList = document.getElementById('floating-toc-list');
 
-    if (!toc || !floatingTocContainer || !toggleButton || !tocMenu || !tocList) {
+    if (!floatingTocContainer || !toggleButton || !tocMenu || !tocList) {
       if(floatingTocContainer) floatingTocContainer.classList.add('hidden');
       return;
     }
 
-    const headings = document.querySelectorAll('.post-body h2[id], .post-body h3[id]');
+    // h1, h2, h3の見出しを全て取得（IDがある場合のみ）
+    let headings = document.querySelectorAll('.post-body h1[id], .post-body h2[id], .post-body h3[id]');
+    
+    // IDがない場合は自動でIDを生成
+    const allHeadings = document.querySelectorAll('.post-body h1, .post-body h2, .post-body h3');
+    allHeadings.forEach((heading, index) => {
+      if (!heading.id) {
+        // テキストからIDを生成（日本語対応）
+        const text = heading.textContent.trim();
+        const id = `heading-${index}-${text.slice(0, 20).replace(/[^\w\-一-龯ぁ-んァ-ヶー]/g, '')}`;
+        heading.id = id;
+      }
+    });
+
+    // IDを持つ見出しを再取得
+    headings = document.querySelectorAll('.post-body h1[id], .post-body h2[id], .post-body h3[id]');
+    
     if (headings.length === 0) {
       floatingTocContainer.classList.add('hidden');
       return;
     }
 
+    // TOCリストを生成
     headings.forEach(heading => {
       const li = document.createElement('li');
       const a = document.createElement('a');
       a.href = `#${heading.id}`;
-      a.textContent = heading.textContent;
+      a.textContent = heading.textContent.trim();
       a.dataset.targetId = heading.id;
+      
+      // スムーズスクロールの実装
+      a.addEventListener('click', (e) => {
+        e.preventDefault();
+        heading.scrollIntoView({ 
+          behavior: 'smooth', 
+          block: 'start' 
+        });
+        // メニューを閉じる
+        tocMenu.classList.remove('show');
+      });
+      
       li.appendChild(a);
       li.classList.add(heading.tagName.toLowerCase());
       tocList.appendChild(li);
@@ -145,42 +249,88 @@
       tocMenu.classList.toggle('show');
     });
 
+    // メニュー外クリックで閉じる
     document.addEventListener('click', (e) => {
       if (!tocMenu.contains(e.target) && !toggleButton.contains(e.target)) {
         tocMenu.classList.remove('show');
       }
     });
 
-    // Show/hide floating TOC based on original TOC visibility
-    const tocObserver = new IntersectionObserver((entries) => {
+    // ESCキーでメニューを閉じる
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        tocMenu.classList.remove('show');
+      }
+    });
+
+    // 元のTOCが表示されている場合はフローティングTOCを非表示
+    if (toc) {
+      const tocObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            floatingTocContainer.classList.add('hidden');
+          } else {
+            floatingTocContainer.classList.remove('hidden');
+          }
+        });
+      }, { rootMargin: "0px 0px -100% 0px" });
+
+      tocObserver.observe(toc);
+    }
+
+    // アクティブな見出しをハイライト
+    const headingObserver = new IntersectionObserver((entries) => {
+      const visibleHeadings = [];
+      
       entries.forEach(entry => {
         if (entry.isIntersecting) {
-          floatingTocContainer.classList.add('hidden');
-        } else {
-          floatingTocContainer.classList.remove('hidden');
+          visibleHeadings.push({
+            element: entry.target,
+            top: entry.boundingClientRect.top
+          });
         }
       });
-    }, { rootMargin: "0px 0px -100% 0px" });
 
-    tocObserver.observe(toc);
+      // 全てのアクティブ状態をリセット
+      const allLinks = tocList.querySelectorAll('a');
+      allLinks.forEach(link => link.classList.remove('active'));
 
-    // Highlight active heading in floating TOC
-    const headingObserver = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        const id = entry.target.getAttribute('id');
-        const link = tocList.querySelector(`a[data-target-id="${id}"]`);
-        if (link) {
-          if (entry.isIntersecting) {
-            link.classList.add('active');
-          } else {
-            link.classList.remove('active');
-          }
+      // 最も上にある見出しをアクティブにする
+      if (visibleHeadings.length > 0) {
+        visibleHeadings.sort((a, b) => Math.abs(a.top) - Math.abs(b.top));
+        const activeHeading = visibleHeadings[0].element;
+        const activeLink = tocList.querySelector(`a[data-target-id="${activeHeading.id}"]`);
+        if (activeLink) {
+          activeLink.classList.add('active');
         }
-      });
-    }, { rootMargin: "-40% 0px -60% 0px" });
+      }
+    }, { 
+      rootMargin: "-20% 0px -70% 0px",
+      threshold: [0, 0.1, 0.5, 1]
+    });
 
+    // 各見出しを監視
     headings.forEach(heading => {
       headingObserver.observe(heading);
     });
+
+    // 初期状態でのアクティブ見出しの設定
+    setTimeout(() => {
+      const scrollTop = window.scrollY;
+      let activeHeading = null;
+      
+      headings.forEach(heading => {
+        if (heading.offsetTop <= scrollTop + 100) {
+          activeHeading = heading;
+        }
+      });
+      
+      if (activeHeading) {
+        const activeLink = tocList.querySelector(`a[data-target-id="${activeHeading.id}"]`);
+        if (activeLink) {
+          activeLink.classList.add('active');
+        }
+      }
+    }, 100);
   });
 </script>
