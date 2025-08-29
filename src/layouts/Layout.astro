@@ -85,7 +85,7 @@ if (database.Icon && database.Icon.Type === 'file') {
         {
           coverImageURL && (
             <div class="cover">
-              <img src={coverImageURL} alt="Cover image" />
+              <img src={coverImageURL} alt="Cover image" loading="lazy" />
             </div>
           )
         }
