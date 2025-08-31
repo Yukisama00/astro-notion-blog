@@ -198,22 +198,8 @@
     }
 
     // h2, h3, h4の見出しを全て取得（IDがある場合のみ）
-    let headings = document.querySelectorAll('.post-body h2[id], .post-body h3[id], .post-body h4[id]');
-    
-    // IDがない場合は自動でIDを生成
-    const allHeadings = document.querySelectorAll('.post-body h2, .post-body h3, .post-body h4');
-    allHeadings.forEach((heading, index) => {
-      if (!heading.id) {
-        // テキストからIDを生成（日本語対応）
-        const text = heading.textContent.trim();
-        const id = `heading-${index}-${text.slice(0, 20).replace(/[^\w\-一-龯ぁ-んァ-ヶー]/g, '')}`;
-        heading.id = id;
-      }
-    });
+    const headings = document.querySelectorAll('.post-body h2[id], .post-body h3[id], .post-body h4[id]');
 
-    // IDを持つ見出しを再取得
-    headings = document.querySelectorAll('.post-body h2[id], .post-body h3[id], .post-body h4[id]');
-    
     if (headings.length === 0) {
       floatingTocContainer.classList.add('hidden');
       return;

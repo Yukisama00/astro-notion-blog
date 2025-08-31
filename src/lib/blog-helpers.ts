@@ -150,13 +150,15 @@ export const getPageLink = (page: number, tag: string) => {
 }
 
 export const slugify = (text: string) => {
+  if (!text) {
+    return ''
+  }
   return text
     .toString()
     .toLowerCase()
     .trim()
-    .replace(/\s+/g, '-')
-    .replace(/[^\w-]+/g, '')
-    .replace(/--+/g, '-')
+    .replace(/[\s\W-]+/g, '-') // Replace spaces, non-word chars and dashes with a single dash
+    .replace(/^-+|-+$/g, '') // Remove leading and trailing dashes
 }
 
 export const getDateStr = (date: string) => {
@@ -175,17 +177,6 @@ export const getDateStr = (date: string) => {
   const m = ('00' + (dt.getMonth() + 1)).slice(-2)
   const d = ('00' + dt.getDate()).slice(-2)
   return y + '-' + m + '-' + d
-}
-
-export const buildHeadingId = (heading: Heading1 | Heading2 | Heading3) => {
-  return heading.RichTexts.map((richText: RichText) => {
-    if (!richText.Text) {
-      return ''
-    }
-    return richText.Text.Content
-  })
-    .join()
-    .trim()
 }
 
 export const getTextContent = (richTexts: RichText[]) => {
