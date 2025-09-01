@@ -123,7 +123,8 @@ const bookmarkURLMap = await buildURLToHTMLMap(bookmarkURLs)
       case 'heading_3':
         return <Heading3 block={block} headings={headings} />
       case 'table_of_contents':
-        return <TableOfContents block={block} headings={headings} />
+        // return <TableOfContents block={block} headings={headings} />
+        return null
       case 'image':
         return <Image block={block} />
       case 'video':
