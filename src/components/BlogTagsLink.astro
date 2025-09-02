@@ -14,7 +14,6 @@ const { heading, tags } = Astro.props
 
 
 <div class="blog-tags-link section">
-  {heading && <h3>{heading}</h3>}
   {
     tags.length === 0 ? (
       <NoContents contents={tags} />
