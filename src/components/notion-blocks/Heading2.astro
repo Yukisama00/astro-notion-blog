@@ -43,10 +43,20 @@ const id = slugify(getTextContent(block.Heading2.RichTexts))
 
 <style>
   h2 {
-    margin: 1em 0 0.3em;
-    color: #1e293b; 
+    margin: 2.5em 0 1em;
+    padding-bottom: 0.5em;
+    border-bottom: 2px solid #e2e8f0;
+    color: #1e293b;
     font-size: 1.5rem;
+    position: relative;
+    background: none !important; /* Disable global gradient */
+    padding-left: 0.8em !important; /* Add left padding to align with h3 */
   }
+
+  h2::before {
+    display: none !important; /* Disable global pseudo-elements */
+  }
+
   @media (max-width: 640px) {
     h2 {
       font-size: 1.2rem;
