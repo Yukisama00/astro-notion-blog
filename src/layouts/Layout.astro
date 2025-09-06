@@ -670,11 +670,11 @@ if (database.Icon && database.Icon.Type === 'file') {
   }
 
   /* Categories Card Enhanced Styling */
-  .categories-card {
-    background: linear-gradient(135deg, 
-      rgba(255, 255, 255, 0.92) 0%, 
-      rgba(254, 252, 232, 0.92) 100%
-    );
+  .categories-card,
+  .about-card,
+  .latest-posts-card {
+    background: linear-gradient(135deg, rgba(59,130,246,0.08), rgba(147,197,253,0.05));
+    border: 1px solid rgba(59,130,246,0.15);
   }
 
   .categories-content {
@@ -699,66 +699,21 @@ if (database.Icon && database.Icon.Type === 'file') {
   .sidebar li a {
     display: flex;
     align-items: center;
-    padding: 10px 14px;
+    padding: 10px 11px;
     color: #475569;
     text-decoration: none;
     border-radius: 10px;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
     font-size: 0.85rem;
     font-weight: 500;
-    position: relative;
-    overflow: hidden;
-    background: linear-gradient(135deg, transparent, rgba(245, 158, 11, 0.02));
-    border: 1px solid transparent;
-  }
-
-  .sidebar li a::before {
-    content: '';
-    position: absolute;
-    left: 0;
-    top: 0;
-    bottom: 0;
-    width: 4px;
-    background: linear-gradient(180deg, #f59e0b, #d97706);
-    transform: scaleY(0);
-    transition: transform 0.3s ease;
-    border-radius: 0 2px 2px 0;
-  }
-
-  .sidebar li a::after {
-    content: '';
-    position: absolute;
-    right: 12px;
-    top: 50%;
-    transform: translateY(-50%) rotate(45deg);
-    width: 6px;
-    height: 6px;
-    border-right: 2px solid currentColor;
-    border-bottom: 2px solid currentColor;
-    opacity: 0;
-    transition: all 0.3s ease;
+    border-left: 3px solid transparent;
   }
 
   .sidebar li a:hover {
-    background: linear-gradient(135deg, 
-      rgba(245, 158, 11, 0.08) 0%, 
-      rgba(217, 119, 6, 0.08) 100%
-    );
-    color: #d97706;
-    transform: translateX(4px);
-    box-shadow: 
-      0 3px 15px rgba(245, 158, 11, 0.12),
-      inset 0 1px 0 rgba(255, 255, 255, 0.6);
-    border-color: rgba(245, 158, 11, 0.2);
-  }
-
-  .sidebar li a:hover::before {
-    transform: scaleY(1);
-  }
-
-  .sidebar li a:hover::after {
-    opacity: 0.7;
-    transform: translateY(-50%) translateX(3px) rotate(45deg);
+    background-color: rgba(59,130,246,0.05);
+    border-left: 3px solid rgba(59,130,246,0.9);
+    color: var(--primary-color);
+    transform: none;
   }
 
   /* Category count styling if present */
@@ -779,10 +734,6 @@ if (database.Icon && database.Icon.Type === 'file') {
 
   /* About Card Enhanced Styling */
   .about-card {
-    background: linear-gradient(135deg, 
-      rgba(255, 255, 255, 0.92) 0%, 
-      rgba(236, 253, 245, 0.92) 100%
-    );
   }
 
   .about-text {
