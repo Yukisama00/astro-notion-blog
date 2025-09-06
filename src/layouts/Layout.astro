@@ -1202,15 +1202,15 @@ if (database.Icon && database.Icon.Type === 'file') {
     min-width: 44px;
     height: 44px;
     padding: 0 12px;
-    background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
-    border: 1px solid rgba(148, 163, 184, 0.2);
-    border-radius: 12px;
-    color: #475569;
+  background: linear-gradient(135deg, #e3f2fd 0%, #e0f7fa 100%);
+  border: 1px solid #b6d4fe;
+  border-radius: 8px;
+  color: #1976d2;
     text-decoration: none;
-    font-weight: 600;
-    font-size: 0.875rem;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    font-weight: 500;
+    font-size: 0.95rem;
+    transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+    box-shadow: 0 1px 3px rgba(33, 150, 243, 0.05);
     position: relative;
     overflow: hidden;
   }
@@ -1218,22 +1218,18 @@ if (database.Icon && database.Icon.Type === 'file') {
   /* ホバーエフェクト */
   .pagination a:not(.inactive):hover {
     transform: translateY(-2px);
-    background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
-    border-color: #3b82f6;
-    color: #3b82f6;
-    box-shadow: 
-      0 8px 25px rgba(59, 130, 246, 0.15),
-      0 4px 12px rgba(0, 0, 0, 0.1);
+    background: linear-gradient(135deg, #bbdefb 0%, #e3f2fd 100%);
+    border-color: #90caf9;
+    color: #1976d2;
+    box-shadow: 0 6px 18px rgba(33,150,243,0.12);
   }
 
   /* 現在のページ（inactiveクラスが現在のページに使われている場合） */
   .pagination a.inactive {
-    background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
-    border-color: #3b82f6;
-    color: #ffffff;
-    box-shadow: 
-      0 8px 25px rgba(59, 130, 246, 0.25),
-      0 4px 12px rgba(0, 0, 0, 0.1);
+    background: linear-gradient(135deg, #90caf9 0%, #e3f2fd 100%);
+    border-color: #64b5f6;
+    color: #1976d2;
+    box-shadow: 0 6px 18px rgba(33,150,243,0.18);
     font-weight: 700;
     cursor: default;
   }
