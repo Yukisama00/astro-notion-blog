@@ -306,12 +306,13 @@ div.blog-post:hover {
   transition: all 0.2s ease;
 }
 
+/* 箇条書きマーカーをページネーション青色に */
 .post ul li::before {
   content: '●';
   position: absolute;
   left: 12px;
   top: 8px;
-  color: #3b82f6;
+  color: rgba(59,130,246,0.9);
   font-size: 0.8rem;
   transition: all 0.2s ease;
 }
@@ -320,6 +321,7 @@ div.blog-post:hover {
   counter-reset: item;
 }
 
+/* 番号付きリストアイコンを青系グラデーションに */
 .post ol li::before {
   content: counter(item);
   counter-increment: item;
@@ -331,7 +333,7 @@ div.blog-post:hover {
   justify-content: center;
   width: 24px;
   height: 24px;
-  background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+  background: linear-gradient(135deg, rgba(59,130,246,0.9), #60a5fa 80%);
   color: white;
   border-radius: 50%;
   font-size: 0.75rem;
