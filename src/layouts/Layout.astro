@@ -335,6 +335,17 @@ if (database.Icon && database.Icon.Type === 'file') {
   .site-footer {
     width: 100%;
     order: 3;
+    padding: 48px 0 32px 0;
+    background: linear-gradient(135deg, #f8fafc 0%, #e0e7ef 100%);
+    box-shadow: 0 8px 32px rgba(60, 80, 120, 0.08);
+    border-top: 1px solid rgba(148, 163, 184, 0.15);
+    border-radius: 0 0 24px 24px;
+    margin-top: 48px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 120px;
   }
 
   /* スクロールバー関連のスタイルを削除 */
@@ -1081,8 +1092,13 @@ if (database.Icon && database.Icon.Type === 'file') {
   /* フッター情報セクション */
   .footer-info {
     text-align: center;
-    font-size: 0.875rem;
-    color: #64748b;
+    font-size: 1.05rem;
+    color: #475569;
+    line-height: 2.2;
+    letter-spacing: 0.01em;
+    padding: 0 16px;
+    max-width: 700px;
+    margin: 0 auto;
   }
 
   .footer-info a {
