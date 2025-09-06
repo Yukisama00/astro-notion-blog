@@ -101,18 +101,6 @@ if (database.Icon && database.Icon.Type === 'file') {
             </header>
 
             <slot name="main" />
-
-            <footer>
-              <div class="footer-info">
-                <div>
-                  <a href="/" style="color:inherit; text-decoration:underline;">{database.Title}</a>
-                </div>
-                <div>
-                  <span>Powered by&nbsp;</span>
-                  <a href="https://github.com/otoyo/astro-notion-blog">astro-notion-blog</a>
-                </div>
-              </div>
-            </footer>
           </div>
         </main>
 
@@ -241,6 +229,18 @@ if (database.Icon && database.Icon.Type === 'file') {
             </div>
           </div>
         </aside>
+
+        <footer class="site-footer">
+          <div class="footer-info">
+            <div>
+              <a href="/" style="color:inherit; text-decoration:underline;">{database.Title}</a>
+            </div>
+            <div>
+              <span>Powered by&nbsp;</span>
+              <a href="https://github.com/otoyo/astro-notion-blog">astro-notion-blog</a>
+            </div>
+          </div>
+        </footer>
       </div>
     </div>
   </body>
@@ -276,6 +276,7 @@ if (database.Icon && database.Icon.Type === 'file') {
 
   .container > div {
     display: flex;
+    flex-wrap: wrap;
     max-width: 100%;
     align-items: stretch;
     min-height: calc(100dvh - 48px);
@@ -310,6 +311,7 @@ if (database.Icon && database.Icon.Type === 'file') {
   /* ===== BEAUTIFUL SIDEBAR DESIGN ===== */
   .sidebar {
     width: 380px;
+    order: 1;
     padding: 24px 20px;
     background: linear-gradient(180deg, 
       rgba(255, 255, 255, 0.95) 0%, 
@@ -328,6 +330,11 @@ if (database.Icon && database.Icon.Type === 'file') {
     gap: 0; /* gapを0に変更 */
     /* 美しい内側の影 */
     box-shadow: inset 1px 0 0 rgba(255, 255, 255, 0.8);
+  }
+
+  .site-footer {
+    width: 100%;
+    order: 3;
   }
 
   /* スクロールバー関連のスタイルを削除 */
