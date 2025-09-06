@@ -3,90 +3,90 @@
   <!-- メインページ -->
   <url>
     <loc>https://togetogeshippo.net/</loc>
-    <lastmod>2025-08-05</lastmod>
+    <lastmod>2025-09-06</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   
-  <!-- 2025年記事 -->
-  <url>
-    <loc>https://togetogeshippo.net/posts/egernia-depressa-hibernation-2025-results/</loc>
-    <lastmod>2025-04-20</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  
-  <url>
-    <loc>https://togetogeshippo.net/posts/ouroborus-cataphractus-hibernation-2025-results/</loc>
-    <lastmod>2025-04-20</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  
+  <!-- 2025年記事（最新・高優先度） -->
   <url>
     <loc>https://togetogeshippo.net/posts/ouroborus-cataphractus-breeding-2025/</loc>
-    <lastmod>2025-08-31</lastmod>
+    <lastmod>2025-09-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   
   <url>
     <loc>https://togetogeshippo.net/posts/egernia-depressa-breeding-2025/</loc>
-    <lastmod>2025-07-25</lastmod>
+    <lastmod>2025-08-11</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   
-  <!-- 2024年記事 -->
   <url>
-    <loc>https://togetogeshippo.net/posts/ouroborus-cataphractus-hibernation-2024-2025-plan/</loc>
-    <lastmod>2025-04-06</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  
-  <url>
-    <loc>https://togetogeshippo.net/posts/egernia-depressa-breeding-2024/</loc>
+    <loc>https://togetogeshippo.net/posts/egernia-depressa-hibernation-2025-results/</loc>
     <lastmod>2025-04-20</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   
-  <!-- 2021-2022年記事 -->
   <url>
-    <loc>https://togetogeshippo.net/posts/ouroborus-cataphractus-breeding-2021-2022/</loc>
-    <lastmod>2022-12-31</lastmod>
-    <changefreq>yearly</changefreq>
-    <priority>0.7</priority>
+    <loc>https://togetogeshippo.net/posts/ouroborus-cataphractus-hibernation-2025-results/</loc>
+    <lastmod>2025-04-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
   </url>
   
-  <url>
-    <loc>https://togetogeshippo.net/posts/ouroborus-cataphractus-hibernation-2020-2021/</loc>
-    <lastmod>2021-12-31</lastmod>
-    <changefreq>yearly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  
-  <!-- 2019-2020年記事 -->
-  <url>
-    <loc>https://togetogeshippo.net/posts/ouroborus-cataphractus-breeding-2019-2020/</loc>
-    <lastmod>2020-12-31</lastmod>
-    <changefreq>yearly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <!-- 一般的な記事 -->
+  <!-- 一般的な記事（常緑コンテンツ） -->
   <url>
     <loc>https://togetogeshippo.net/posts/lizard-growth-comparison-egernia-ouroborus/</loc>
     <lastmod>2025-05-17</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.7</priority>
   </url>
   
   <url>
     <loc>https://togetogeshippo.net/posts/smart-home-reptile-keeping/</loc>
     <lastmod>2025-05-05</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.7</priority>
+  </url>
+  
+  <!-- 2024年記事 -->
+  <url>
+    <loc>https://togetogeshippo.net/posts/ouroborus-cataphractus-hibernation-2024-2025-plan/</loc>
+    <lastmod>2025-04-06</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://togetogeshippo.net/posts/egernia-depressa-breeding-2024/</loc>
+    <lastmod>2025-04-20</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <!-- 2021-2022年記事（アーカイブ） -->
+  <url>
+    <loc>https://togetogeshippo.net/posts/ouroborus-cataphractus-breeding-2021-2022/</loc>
+    <lastmod>2022-12-31</lastmod>
+    <changefreq>never</changefreq>
+    <priority>0.4</priority>
+  </url>
+  
+  <url>
+    <loc>https://togetogeshippo.net/posts/ouroborus-cataphractus-hibernation-2020-2021/</loc>
+    <lastmod>2021-12-31</lastmod>
+    <changefreq>never</changefreq>
+    <priority>0.4</priority>
+  </url>
+  
+  <!-- 2019-2020年記事（アーカイブ） -->
+  <url>
+    <loc>https://togetogeshippo.net/posts/ouroborus-cataphractus-breeding-2019-2020/</loc>
+    <lastmod>2020-12-31</lastmod>
+    <changefreq>never</changefreq>
+    <priority>0.3</priority>
   </url>
 </urlset>

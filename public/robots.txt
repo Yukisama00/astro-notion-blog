@@ -1,18 +1,51 @@
 # robots.txt for togetogeshippo.net
 # 爬虫類飼育・繁殖記録サイト
 
+# 全体的な許可設定
 User-agent: *
 Allow: /
 
-# 画像ファイルへのクロールを許可（SEO上有効）
+# 主要検索エンジン向けの最適化設定
+User-agent: Googlebot
+Allow: /
+Crawl-delay: 1
+
+User-agent: Bingbot
+Allow: /
+Crawl-delay: 1
+
+# 画像ファイルへのクロールを明示的に許可（SEO効果向上）
 Allow: *.jpg
 Allow: *.jpeg
 Allow: *.png
 Allow: *.gif
 Allow: *.webp
+Allow: *.svg
 
-# サイトマップの場所を指定
+# システムファイル・管理画面の除外
+Disallow: /wp-admin/
+Disallow: /wp-includes/
+Disallow: /wp-content/plugins/
+Disallow: /wp-content/themes/
+Disallow: *.php$
+Disallow: /cgi-bin/
+Disallow: /admin/
+Disallow: /private/
+
+# 不要なファイルの除外
+Disallow: /tmp/
+Disallow: *.log$
+Disallow: *.sql$
+Disallow: /backup/
+
+# 検索・フィルター結果ページの除外（重複コンテンツ防止）
+Disallow: /*?*
+Disallow: /search
+Disallow: /tag/*
+Disallow: /category/*
+
+# サイトマップの指定
 Sitemap: https://togetogeshippo.net/sitemap.xml
 
-# クロール頻度の調整（大手検索エンジン向け）
+# クロール頻度の調整（サーバー負荷軽減）
 Crawl-delay: 1
