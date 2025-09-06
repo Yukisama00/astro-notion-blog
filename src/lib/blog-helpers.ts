@@ -1,9 +1,5 @@
 import { BASE_PATH, REQUEST_TIMEOUT_MS } from '../server-constants'
-import type {
-  Block,
-  RichText,
-  Column,
-} from './interfaces'
+import type { Block, RichText, Column } from './interfaces'
 import { pathJoin } from './utils'
 
 export const filePath = (url: URL): string => {
