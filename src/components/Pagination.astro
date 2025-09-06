@@ -23,19 +23,19 @@ for (let i = startPage; i <= endPage; i++) {
 ---
 
 <div class="pagination">
-  <a href={getPageLink(1, tag)} class={`pagination-btn ${isFirstPage ? 'inactive' : ''}`}>
+  <a href={getPageLink(1, tag)} class={`pagination-btn no-style ${isFirstPage ? 'inactive' : ''}`}>
     <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
       <path d="M18.41 16.59L13.82 12l4.59-4.59L17 6l-6 6 6 6 1.41-1.41zM6 6h2v12H6V6z"/>
     </svg>
   </a>
   {
     pages.map((p: number) => (
-      <a href={getPageLink(p, tag)} class={`pagination-btn ${p === currentPage ? 'active' : ''}`}>
+  <a href={getPageLink(p, tag)} class={`pagination-btn no-style ${p === currentPage ? 'active' : ''}`}>
         {p}
       </a>
     ))
   }
-  <a href={getPageLink(numberOfPages, tag)} class={`pagination-btn ${isLastPage ? 'inactive' : ''}`}>
+  <a href={getPageLink(numberOfPages, tag)} class={`pagination-btn no-style ${isLastPage ? 'inactive' : ''}`}>
     <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
       <path d="M5.59 7.41L10.18 12l-4.59 4.59L7 18l6-6-6-6L5.59 7.41zM16 6h2v12h-2V6z"/>
     </svg>
@@ -59,45 +59,59 @@ for (let i = startPage; i <= endPage; i++) {
     min-width: 44px;
     height: 44px;
     padding: 0 12px;
-    background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
-    border: 1px solid rgba(148, 163, 184, 0.2);
+    background: rgba(255, 255, 255, 0.25);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
     border-radius: 12px;
-    color: #475569;
+    color: #1e293b;
     text-decoration: none;
     font-weight: 600;
-    font-size: 0.875rem;
+    font-size: 0.95rem;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.4);
     position: relative;
     overflow: hidden;
   }
 
+  /* シマーエフェクト */
+  .pagination-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+    transition: left 0.5s ease;
+  }
+
   /* ホバーエフェクト */
   .pagination-btn:not(.inactive):not(.active):hover {
-    transform: translateY(-2px);
-    background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
-    border-color: #3b82f6;
+    transform: translateY(-3px) scale(1.02);
+    background: rgba(255,255,255,0.4);
+    border-color: rgba(59,130,246,0.5);
+    box-shadow: 0 12px 40px rgba(59,130,246,0.2), inset 0 1px 0 rgba(255,255,255,0.6);
     color: #3b82f6;
-    box-shadow: 
-      0 8px 25px rgba(59, 130, 246, 0.15),
-      0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+  .pagination-btn:not(.inactive):not(.active):hover::before {
+    left: 100%;
   }
 
   /* アクティブページ（現在のページ） */
   .pagination-btn.active {
-    background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
-    border-color: #3b82f6;
-    color: #ffffff;
-    box-shadow: 
-      0 8px 25px rgba(59, 130, 246, 0.25),
-      0 4px 12px rgba(0, 0, 0, 0.1);
+    background: rgba(59,130,246,0.9);
+    color: white;
+    border-color: rgba(59,130,246,0.8);
+    box-shadow: 0 8px 32px rgba(59,130,246,0.3), inset 0 1px 0 rgba(255,255,255,0.3);
     font-weight: 700;
+    cursor: default;
   }
 
   /* 無効なボタン（最初/最後のページで表示される矢印） */
   .pagination-btn.inactive {
-    background: #f1f5f9;
-    border-color: rgba(148, 163, 184, 0.1);
+    background: rgba(233,236,239,0.7);
+    border-color: rgba(148,163,184,0.1);
     color: #cbd5e1;
     cursor: not-allowed;
     box-shadow: none;
@@ -105,22 +119,40 @@ for (let i = startPage; i <= endPage; i++) {
 
   .pagination-btn.inactive:hover {
     transform: none;
-    background: #f1f5f9;
-    border-color: rgba(148, 163, 184, 0.1);
+    background: rgba(233,236,239,0.7);
+    border-color: rgba(148,163,184,0.1);
     color: #cbd5e1;
     box-shadow: none;
   }
 
-  /* グラデーション効果をアクティブボタンに追加 */
-  .pagination-btn.active::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 2px;
-    background: linear-gradient(90deg, #ffffff, rgba(255,255,255,0.3), #ffffff);
-    opacity: 0.6;
+  /* レスポンシブ対応 */
+  @media (max-width: 768px) {
+    .pagination {
+      gap: 4px;
+      margin: 32px 0 24px;
+    }
+    .pagination-btn {
+      min-width: 40px;
+      height: 40px;
+      padding: 0 10px;
+      font-size: 0.85rem;
+      border-radius: 10px;
+      backdrop-filter: blur(15px);
+      -webkit-backdrop-filter: blur(15px);
+    }
+  }
+
+  @media (max-width: 480px) {
+    .pagination {
+      gap: 2px;
+    }
+    .pagination-btn {
+      min-width: 36px;
+      height: 36px;
+      padding: 0 8px;
+      font-size: 0.8rem;
+      border-radius: 8px;
+    }
   }
 
   /* レスポンシブ対応 */
