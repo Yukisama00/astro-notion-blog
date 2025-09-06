@@ -4,11 +4,10 @@ import { getPostLink } from '../lib/blog-helpers.ts'
 import NoContents from './NoContents.astro'
 
 export interface Props {
-  heading?: string
   posts: Post[]
 }
 
-const { heading, posts } = Astro.props
+const { posts } = Astro.props
 ---
 
 <div class="blog-posts-link section">

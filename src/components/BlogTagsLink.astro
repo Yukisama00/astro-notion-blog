@@ -5,11 +5,10 @@ import NoContents from './NoContents.astro'
 import '../styles/notion-color.css'
 
 export interface Props {
-  heading?: string
   tags: SelectProperty[]
 }
 
-const { heading, tags } = Astro.props
+const { tags } = Astro.props
 ---
 
 
