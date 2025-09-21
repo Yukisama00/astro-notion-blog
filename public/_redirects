@@ -1,1 +1,21 @@
 https://togetogeshippo.pages.dev/* https://togetogeshippo.net/:splat 301!
+# _redirects ファイル
+# プロジェクトのpublic/ または dist/ フォルダに配置
+
+# 個別記事ページの末尾スラッシュ統一
+/posts/:slug  /posts/:slug/  301
+
+# ページネーションの末尾スラッシュ統一
+/posts/page/:page  /posts/page/:page/  301
+
+# タグページの末尾スラッシュ統一
+/posts/tag/:tag  /posts/tag/:tag/  301
+
+# タグページのページネーション統一
+/posts/tag/:tag/page/:page  /posts/tag/:tag/page/:page/  301
+
+# スペース含むタグURLの修正（個別対応）
+/posts/tag/Ouroborus%20cataphractus  /posts/tag/Ouroborus_cataphractus/  301
+/posts/tag/Ouroborus%20cataphractus/  /posts/tag/Ouroborus_cataphractus/  301
+/posts/tag/Egernia%20depressa  /posts/tag/Egernia_depressa/  301
+/posts/tag/Egernia%20depressa/  /posts/tag/Egernia_depressa/  301
