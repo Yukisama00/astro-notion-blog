@@ -31,3 +31,6 @@ public/notion/*
 
 # Gemini CLI specific files
 #.github/workflows/gemini-*.yml
+
+# local scripts
+image-sitemap-generator.py

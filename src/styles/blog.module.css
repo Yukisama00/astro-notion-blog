@@ -556,6 +556,12 @@ div.blog-post:hover {
   }
 }
 
+@media (max-width: 640px) {
+  .post {
+    padding: 0 1rem;
+  }
+}
+
 /* ===== SPECIAL CONTENT BOXES ===== */
 .post .info-box,
 .post .warning-box,
