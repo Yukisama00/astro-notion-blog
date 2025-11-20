@@ -362,8 +362,8 @@ if (database.Icon && database.Icon.Type === 'file') {
     background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
     border-radius: 24px;
     box-shadow:
-      0 20px 60px rgba(0, 0, 0, 0.12),
-      0 8px 25px rgba(0, 0, 0, 0.08);
+      0 25px 50px -12px rgba(0, 0, 0, 0.15),
+      0 0 0 1px rgba(255, 255, 255, 0.5);
     padding: 0;
     margin: 24px auto;
     max-width: 1400px;
@@ -458,7 +458,7 @@ if (database.Icon && database.Icon.Type === 'file') {
     order: 3;
     padding: 48px 0 32px 0;
     /* 元の美しいグラデーション背景を復活 */
-    background: linear-gradient(135deg, #f8fafc 0%, #e0e7ef 100%);
+    background: #ffffff; /* Clean white background for footer */
     box-shadow: 0 8px 32px rgba(60, 80, 120, 0.08);
     border-top: 1px solid rgba(148, 163, 184, 0.15);
     border-radius: 0 0 24px 24px;
@@ -466,7 +466,7 @@ if (database.Icon && database.Icon.Type === 'file') {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    min-height: 120px;
+    min-height: 100px;
   }
 
   /* スクロールバー関連のスタイルを削除 */
@@ -863,10 +863,14 @@ if (database.Icon && database.Icon.Type === 'file') {
   }
 
   .sidebar li a:hover {
-    background-color: rgba(59, 130, 246, 0.05);
-    border-left: 3px solid rgba(59, 130, 246, 0.9);
-    color: var(--primary-color);
-    transform: none;
+    background: linear-gradient(
+      90deg,
+      rgba(59, 130, 246, 0.1),
+      rgba(139, 92, 246, 0.05)
+    );
+    border-left: 3px solid #3b82f6;
+    color: #1e293b;
+    padding-left: 16px; /* Slight movement effect */
   }
 
   /* Category count styling if present */
