@@ -457,8 +457,14 @@ if (database.Icon && database.Icon.Type === 'file') {
     width: 100%;
     order: 3;
     padding: 48px 0 32px 0;
-    /* 元の美しいグラデーション背景を復活 */
-    background: #ffffff; /* Clean white background for footer */
+    /* サイドバーと同じ背景色 */
+    background: linear-gradient(
+      180deg,
+      rgb(241, 245, 249) 0%,
+      rgb(226, 232, 240) 50%,
+      rgb(203, 213, 225) 100%
+    );
+    backdrop-filter: blur(20px);
     box-shadow: 0 8px 32px rgba(60, 80, 120, 0.08);
     border-top: 1px solid rgba(148, 163, 184, 0.15);
     border-radius: 0 0 24px 24px;
