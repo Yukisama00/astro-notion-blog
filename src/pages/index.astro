@@ -137,6 +137,8 @@ const [posts, rankedPosts, tags, numberOfPages] = await Promise.all([
     box-shadow:
       0 4px 6px -1px rgba(0, 0, 0, 0.05),
       0 2px 4px -1px rgba(0, 0, 0, 0.03);
+    width: 100%;
+    box-sizing: border-box;
   }
 
   .post-card::before {
@@ -174,6 +176,8 @@ const [posts, rankedPosts, tags, numberOfPages] = await Promise.all([
     display: flex;
     align-items: center;
     justify-content: center;
+    width: 100%;
+    box-sizing: border-box;
   }
 
   .card-image :global(img) {
@@ -181,6 +185,7 @@ const [posts, rankedPosts, tags, numberOfPages] = await Promise.all([
     height: 100%;
     object-fit: cover;
     transition: transform 0.3s ease;
+    display: block;
   }
 
   .card-image :global(.featured-image) {
@@ -197,6 +202,8 @@ const [posts, rankedPosts, tags, numberOfPages] = await Promise.all([
     display: flex;
     flex-direction: column;
     gap: 16px;
+    width: 100%;
+    box-sizing: border-box;
   }
 
   .card-tags {
@@ -335,6 +342,7 @@ const [posts, rankedPosts, tags, numberOfPages] = await Promise.all([
 
     .card-image {
       height: 180px;
+      width: 100%;
     }
 
     .card-title :global(h2) {
@@ -349,6 +357,27 @@ const [posts, rankedPosts, tags, numberOfPages] = await Promise.all([
 
     .card-date {
       align-items: flex-start;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .post-card {
+      width: 100%;
+    }
+
+    .card-image {
+      height: 160px;
+      width: 100%;
+      aspect-ratio: auto;
+    }
+
+    .card-content {
+      padding: 16px;
+      gap: 12px;
+    }
+
+    .card-title :global(h2) {
+      font-size: 1rem;
     }
   }
 </style>
