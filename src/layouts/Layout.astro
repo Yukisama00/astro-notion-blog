@@ -1002,10 +1002,20 @@ if (database.Icon && database.Icon.Type === 'file') {
     display: flex;
     flex-direction: column;
     align-items: center; /* 中央配置 */
+    width: 100%;
+    box-sizing: border-box;
   }
   @media (max-width: 768px) {
     div.content {
       padding: 24px 0;
+      width: 100vw;
+      margin-left: calc(-50vw + 50%);
+    }
+  }
+  @media (max-width: 640px) {
+    div.content {
+      width: 100vw;
+      margin-left: calc(-50vw + 50%);
     }
   }
 
