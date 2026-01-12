@@ -109,23 +109,44 @@ const links = [
     grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
     gap: 32px;
     margin-bottom: 48px;
+    width: 100%;
+    padding: 0 48px;
+    box-sizing: border-box;
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
   }
 
   @media (max-width: 768px) {
     .posts-grid {
       grid-template-columns: 1fr;
       gap: 24px;
+      padding: 0 16px;
+      max-width: 100%;
+      margin-bottom: 32px;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .posts-grid {
+      padding: 0 12px;
+      gap: 16px;
     }
   }
 
   .post-card {
-    background: #ffffff;
-    border-radius: 16px;
-    border: 1px solid rgba(148, 163, 184, 0.15);
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(12px);
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.6);
     overflow: hidden;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     position: relative;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    box-shadow:
+      0 4px 6px -1px rgba(0, 0, 0, 0.05),
+      0 2px 4px -1px rgba(0, 0, 0, 0.03);
+    width: 100%;
+    box-sizing: border-box;
   }
 
   .post-card::before {
@@ -142,11 +163,12 @@ const links = [
   }
 
   .post-card:hover {
-    transform: translateY(-8px);
-    box-shadow: 
-      0 20px 40px rgba(0, 0, 0, 0.1),
-      0 8px 16px rgba(0, 0, 0, 0.06);
-    border-color: rgba(59, 130, 246, 0.3);
+    transform: translateY(-8px) scale(1.01);
+    box-shadow:
+      0 20px 25px -5px rgba(0, 0, 0, 0.1),
+      0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    border-color: rgba(59, 130, 246, 0.4);
+    background: rgba(255, 255, 255, 0.95);
   }
 
   .post-card:hover::before {
@@ -156,11 +178,14 @@ const links = [
   .card-image {
     position: relative;
     overflow: hidden;
-    height: 200px;
+    aspect-ratio: 16 / 9;
+    height: auto;
     background: #f8fafc;
     display: flex;
     align-items: center;
     justify-content: center;
+    width: 100%;
+    box-sizing: border-box;
   }
 
   .card-image :global(img) {
@@ -168,6 +193,7 @@ const links = [
     height: 100%;
     object-fit: cover;
     transition: transform 0.3s ease;
+    display: block;
   }
 
   .card-image :global(.featured-image) {
@@ -184,6 +210,8 @@ const links = [
     display: flex;
     flex-direction: column;
     gap: 16px;
+    width: 100%;
+    box-sizing: border-box;
   }
 
   .card-tags {
@@ -322,6 +350,7 @@ const links = [
 
     .card-image {
       height: 180px;
+      width: 100%;
     }
 
     .card-title :global(h2) {
@@ -336,6 +365,27 @@ const links = [
 
     .card-date {
       align-items: flex-start;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .post-card {
+      width: 100%;
+    }
+
+    .card-image {
+      height: 160px;
+      width: 100%;
+      aspect-ratio: auto;
+    }
+
+    .card-content {
+      padding: 16px;
+      gap: 12px;
+    }
+
+    .card-title :global(h2) {
+      font-size: 1rem;
     }
   }
 </style>
