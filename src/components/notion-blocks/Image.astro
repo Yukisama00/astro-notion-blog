@@ -10,10 +10,15 @@ export interface Props {
 const { block } = Astro.props
 
 let image = ''
+let lightboxImage = '' // ライトボックス用の表示用URL
 if (block.Image.External) {
   image = block.Image.External.Url
+  lightboxImage = block.Image.External.Url
 } else if (block.Image.File) {
-  image = filePath(new URL(block.Image.File.Url))
+  const localPath = filePath(new URL(block.Image.File.Url))
+  image = localPath
+  // ライトボックスには完全なURLを使用（Astro.site を使用）
+  lightboxImage = new URL(localPath, Astro.site).toString()
 }
 ---
 
@@ -22,7 +27,9 @@ if (block.Image.External) {
     image && (
       <div>
         <div>
-          <img src={image} alt="Image in a image block" loading="lazy" />
+          <a href={lightboxImage} data-fslightbox="image-gallery" data-caption="">
+            <img src={image} alt="Image in a image block" loading="lazy" />
+          </a>
         </div>
         <Caption richTexts={block.Image.Caption} />
       </div>
@@ -34,15 +41,41 @@ if (block.Image.External) {
   .image {
     display: flex;
     margin: 0 auto;
+    width: 100%;
   }
   .image > div {
     margin: 0 auto;
+    width: 100%;
+    max-width: 100%;
   }
   .image > div > div {
     line-height: 0;
+    width: 100%;
+  }
+  .image > div > div a {
+    display: block;
+    width: 100%;
+    cursor: pointer;
+    transition: opacity 0.2s ease;
+  }
+  .image > div > div a:hover {
+    opacity: 0.85;
   }
   .image > div > div img {
     display: block;
     max-width: 100%;
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+    transition: transform 0.2s ease;
+  }
+  .image > div > div a:hover img {
+    transform: scale(1.01);
+  }
+
+  @media (max-width: 768px) {
+    .image > div > div img {
+      border-radius: 6px;
+    }
   }
 </style>

@@ -77,6 +77,7 @@ if (database.Icon && database.Icon.Type === 'file') {
       crossorigin="anonymous"
     />
     <link rel="sitemap" href="/sitemap-index.xml" />
+    <script src="/scripts/fslightbox.js" defer></script>
   </head>
   <body>
     <GoogleAnalytics trackingId={PUBLIC_GA_TRACKING_ID} />
@@ -353,6 +354,25 @@ if (database.Icon && database.Icon.Type === 'file') {
         </footer>
       </div>
     </div>
+
+    <script>
+      // FSLightbox の初期化
+      if (typeof FSLightbox !== 'undefined') {
+        new FSLightbox();
+      }
+      
+      // MutationObserver で動的に追加された画像にもライトボックスを適用
+      const observer = new MutationObserver(() => {
+        if (typeof FSLightbox !== 'undefined') {
+          new FSLightbox();
+        }
+      });
+      
+      observer.observe(document.body, { 
+        childList: true, 
+        subtree: true 
+      });
+    </script>
   </body>
 </html>
 
